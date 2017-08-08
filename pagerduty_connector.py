@@ -26,9 +26,6 @@ import requests
 from bs4 import BeautifulSoup
 
 
-requests.packages.urllib3.disable_warnings()
-
-
 # Define the App Class
 class PagerDutyConnector(BaseConnector):
 
