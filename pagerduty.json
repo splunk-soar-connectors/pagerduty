@@ -1,18 +1,18 @@
 {
     "appid"      : "932c09b3-e09d-40ff-a2b7-b090f7468c54", 
     "name"      : "PagerDuty",
-    "description" : "App that integrates with PagerDuty and implements actions like <b>list teams</b>, <b>get oncall</b> etc.",
+    "description" : "This App provides ticketing assistance with PagerDuty",
     "publisher": "Phantom",
     "package_name": "phantom_pagerduty",
     "type": "ticketing",
-    "license": "Copyright (c) Phantom Cyber Corporation 2016",
+    "license": "Copyright (c) Phantom Cyber Corporation 2016-2017",
     "main_module" : "pagerduty_connector.pyc",
     "app_version": "1.0.10",
     "utctime_updated": "2017-08-28T22:58:06.000000Z",
     "product_vendor": "PagerDuty",
     "product_name": "PagerDuty",
     "product_version_regex": ".*",
-    "min_phantom_version": "3.0.190",
+    "min_phantom_version": "3.0.247",
     "logo": "pg.png",
     "configuration": {
       "base_url": {
@@ -27,7 +27,7 @@
       },
       "api_token": {
         "description": "API Key",
-        "data_type": "string",
+        "data_type": "password",
         "required": true,
         "order": 2
       }
