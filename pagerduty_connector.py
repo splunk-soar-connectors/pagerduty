@@ -26,6 +26,16 @@ import requests
 from bs4 import BeautifulSoup
 
 
+class RetVal4(tuple):
+    def __new__(cls, val1, val2, val3, val4):
+        return tuple.__new__(RetVal4, (val1, val2, val3, val4))
+
+
+class RetVal2(tuple):
+    def __new__(cls, val1, val2):
+        return tuple.__new__(RetVal2, (val1, val2))
+
+
 # Define the App Class
 class PagerDutyConnector(BaseConnector):
 
@@ -55,7 +65,7 @@ class PagerDutyConnector(BaseConnector):
         return phantom.APP_SUCCESS
 
     def _normalize_text(self, text):
-        return text.replace('}', '').replace('{', '')
+        return text.replace('}', '}}').replace('{', '{{')
 
     def _parse_response(self, result, r):
 
@@ -95,12 +105,13 @@ class PagerDutyConnector(BaseConnector):
                         error.get('message', 'None'),
                         error.get('code', 'None'),
                         '\n'.join(error.get('errors', [])))
-                return result.set_status(phantom.APP_ERROR, "Error detected, status_code: {0}, {1}".format(r.status_code, error_message))
+                return RetVal4(result.set_status(phantom.APP_ERROR, "Error detected, status_code: {0}, data: {1}".format(r.status_code, error_message)), None, None, None)
 
         if (not ( 200 <= r.status_code < 300)):
-            return result.set_status(phantom.APP_ERROR, "Call returned error, status_code: {0}, data: {1}".format(r.status_code, self._normalize_text(r.text)))
+            return RetVal4(result.set_status(phantom.APP_ERROR, "Call returned error, status_code: {0}, data: {1}"
+                    .format(r.status_code, self._normalize_text(r.text))), None, None, None)
 
-        return (phantom.APP_SUCCESS, status_code, resp_type, resp_data)
+        return RetVal4(phantom.APP_SUCCESS, status_code, resp_type, resp_data)
 
     def _make_rest_call(self, endpoint, result, params={}, headers={}, data=None, method="get"):
 
@@ -111,7 +122,7 @@ class PagerDutyConnector(BaseConnector):
         request_func = getattr(requests, method)
 
         if (not request_func):
-            return (result.set_status(phantom.APP_ERROR, "Invalid method call: {0} for requests module".format(method)), None)
+            return RetVal2(result.set_status(phantom.APP_ERROR, "Invalid method call: {0} for requests module".format(method)), None)
 
         if (data is not None):
             data = json.dumps(data)
@@ -119,15 +130,15 @@ class PagerDutyConnector(BaseConnector):
         try:
             r = request_func(url, headers=headers, params=params, data=data)
         except Exception as e:
-            return (result.set_status(phantom.APP_ERROR, "REST Api to server failed", e), None)
+            return RetVal2(result.set_status(phantom.APP_ERROR, "REST Api to server failed", e), None)
 
         ret_val, status_code, resp_type, resp_data = self._parse_response(result, r)
 
         # Any http or parsing error is handled by the _parse_response function
         if (phantom.is_fail(ret_val)):
-            return (result.get_status(), resp_data)
+            return RetVal2(result.get_status(), resp_data)
 
-        return (phantom.APP_SUCCESS, resp_data)
+        return RetVal2(phantom.APP_SUCCESS, resp_data)
 
     def _test_connectivity(self, param):
 
@@ -208,6 +219,7 @@ class PagerDutyConnector(BaseConnector):
             ret_val = self._test_connectivity(param)
 
         return ret_val
+
 
 if __name__ == '__main__':
 
