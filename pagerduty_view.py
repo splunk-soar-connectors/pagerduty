@@ -14,8 +14,6 @@
 
 # import json
 
-from pagerduty_consts import *
-
 
 def get_ctx_result(result):
 
