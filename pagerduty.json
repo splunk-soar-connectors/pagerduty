@@ -1,199 +1,206 @@
 {
-    "appid"      : "932c09b3-e09d-40ff-a2b7-b090f7468c54", 
-    "name"      : "PagerDuty",
-    "description" : "App that integrates with PagerDuty and implements actions like <b>list teams</b>, <b>get oncall</b> etc.",
+    "appid": "932c09b3-e09d-40ff-a2b7-b090f7468c54",
+    "name": "PagerDuty",
+    "description": "App that integrates with PagerDuty and implements actions like <b>list teams</b>, <b>get oncall</b> etc.",
     "publisher": "Phantom",
     "package_name": "phantom_pagerduty",
     "type": "ticketing",
-    "license": "Copyright (c) Phantom Cyber Corporation 2016",
-    "main_module" : "pagerduty_connector.pyc",
-    "app_version": "1.0.9",
-    "utctime_updated": "2017-08-10T00:27:26.000000Z",
+    "license": "Copyright (c) Phantom Cyber Corporation, 2016-2018",
+    "main_module": "pagerduty_connector.pyc",
+    "app_version": "1.0.14",
+    "utctime_updated": "2018-01-26T00:49:10.000000Z",
     "product_vendor": "PagerDuty",
     "product_name": "PagerDuty",
     "product_version_regex": ".*",
     "min_phantom_version": "3.0.190",
-    "logo": "pg.png",
+    "logo": "logo_pagerduty.svg",
+    "logo_dark": "logo_pagerduty_dark.svg",
     "configuration": {
-      "base_url": {
-        "description": "PagerDuty base url e.g. https://mycompany.pagerduty.com",
-        "data_type": "string",
-        "required": true,
-        "order": 0
-      },
-      "ph": {
-        "data_type": "ph",
-        "order": 1
-      },
-      "api_token": {
-        "description": "API Key",
-        "data_type": "string",
-        "required": true,
-        "order": 2
-      }
+        "base_url": {
+            "description": "PagerDuty base url e.g. https://mycompany.pagerduty.com",
+            "data_type": "string",
+            "required": true,
+            "order": 0
+        },
+        "ph": {
+            "data_type": "ph",
+            "order": 1
+        },
+        "api_token": {
+            "description": "API Key",
+            "data_type": "string",
+            "required": true,
+            "order": 2
+        }
     },
     "actions": [
-      {
-        "action": "test connectivity",
-        "description": "Validate the asset configuration for connectivity using supplied configuration.",
-        "type": "test",
-        "identifier": "test_asset_connectivity",
-        "read_only": true,
-        "parameters": {
+        {
+            "action": "test connectivity",
+            "description": "Validate the asset configuration for connectivity using supplied configuration.",
+            "type": "test",
+            "identifier": "test_asset_connectivity",
+            "read_only": true,
+            "parameters": {},
+            "output": [],
+            "versions": "EQ(*)"
         },
-        "output": [],
-        "versions":"EQ(*)"
-      },
-      {
-        "action" : "list teams",
-        "description":  "Get list of teams configured on PagerDuty",
-        "type": "generic",
-        "identifier": "list_teams",
-        "read_only": true,
-        "parameters": {
+        {
+            "action": "list teams",
+            "description": "Get list of teams configured on PagerDuty",
+            "type": "generic",
+            "identifier": "list_teams",
+            "read_only": true,
+            "parameters": {},
+            "render": {
+                "type": "table",
+                "width": 12,
+                "height": 5,
+                "title": "PagerDuty Oncall"
+            },
+            "output": [
+                {
+                    "data_path": "action_result.data.*.id",
+                    "data_type": "string",
+                    "column_name": "ID",
+                    "column_order": 1
+                },
+                {
+                    "data_path": "action_result.data.*.name",
+                    "data_type": "string",
+                    "contains": [
+                        "pagerduty team"
+                    ],
+                    "column_name": "Name",
+                    "column_order": 0
+                },
+                {
+                    "data_path": "action_result.data.*.description",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.summary.total_teams",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "summary.total_objects",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric"
+                }
+            ],
+            "versions": "EQ(*)"
         },
-        "render": {
-          "type": "table",
-          "width": 12,
-          "height": 5,
-          "title": "PagerDuty Oncall"
-        },
-        "output": [
-          {
-            "data_path": "action_result.data.*.id",
-            "data_type": "string",
-            "column_name": "ID",
-            "column_order": 1
-          },
-          {
-            "data_path": "action_result.data.*.name",
-            "data_type": "string",
-            "contains": ["pagerduty team"],
-            "column_name": "Name",
-            "column_order": 0
-          },
-          {
-            "data_path": "action_result.data.*.description",
-            "data_type": "string"
-          },
-          {
-            "data_path": "action_result.status",
-            "data_type": "string"
-          },
-          {
-            "data_path": "action_result.message",
-            "data_type": "string"
-          },
-          {
-            "data_path": "action_result.summary.total_teams",
-            "data_type": "numeric"
-          },
-          {
-            "data_path": "summary.total_objects",
-            "data_type": "numeric"
-          },
-          {
-            "data_path": "summary.total_objects_successful",
-            "data_type": "numeric"
-          }
-        ],
-        "versions":"EQ(*)"
-      },
-      {
-        "action" : "get oncall",
-        "description":  "Get the current on call personnel",
-        "type": "generic",
-        "identifier": "get_pd_oncall",
-        "read_only": true,
-        "parameters": {
-          "team": {
-            "description": "Team to get on call of",
-            "data_type": "string",
-            "contains": ["pagerduty team"],
-            "required": true,
-            "primary": true
-            }
-        },
-        "render": {
-          "type": "custom",
-          "width": 10,
-          "height": 5,
-          "view": "pagerduty_view.display_oncall",
-          "title": "Get OnCall"
-        },
-        "output": [
-          {
-            "data_path": "action_result.data.*.id",
-            "data_type": "string"
-          },
-          {
-            "data_path": "action_result.data.*.name",
-            "data_type": "string"
-          },
-          {
-            "data_path": "action_result.data.*.on_call.*.end",
-            "data_type": "string"
-          },
-          {
-            "data_path": "action_result.data.*.on_call.*.user.id",
-            "data_type": "string"
-          },
-          {
-            "data_path": "action_result.data.*.on_call.*.user.name",
-            "data_type": "string"
-          },
-          {
-            "data_path": "action_result.data.*.on_call.*.user.role",
-            "data_type": "string"
-          },
-          {
-            "data_path": "action_result.data.*.on_call.*.user.color",
-            "data_type": "string"
-          },
-          {
-            "data_path": "action_result.data.*.on_call.*.user.email",
-            "data_type": "string",
-            "contains": ["email"]
-          },
-          {
-            "data_path": "action_result.data.*.on_call.*.user.time_zone",
-            "data_type": "string"
-          },
-          {
-            "data_path": "action_result.data.*.on_call.*.level",
-            "data_type": "numeric"
-          },
-          {
-            "data_path": "action_result.data.*.on_call.*.start",
-            "data_type": "string"
-          },
-          {
-            "data_path": "action_result.status",
-            "data_type": "string"
-          },
-          {
-            "data_path": "action_result.message",
-            "data_type": "string"
-          },
-          {
-            "data_path": "action_result.summary.total_policies",
-            "data_type": "numeric"
-          },
-          {
-            "data_path": "action_result.parameter.team",
-            "data_type": "string",
-            "contains": ["pagerduty team"]
-          },
-          {
-            "data_path": "summary.total_objects",
-            "data_type": "numeric"
-          },
-          {
-            "data_path": "summary.total_objects_successful",
-            "data_type": "numeric"
-          }
-        ],
-        "versions":"EQ(*)"
-      }
+        {
+            "action": "get oncall",
+            "description": "Get the current on call personnel",
+            "type": "generic",
+            "identifier": "get_pd_oncall",
+            "read_only": true,
+            "parameters": {
+                "team": {
+                    "description": "Team to get on call of",
+                    "data_type": "string",
+                    "contains": [
+                        "pagerduty team"
+                    ],
+                    "required": true,
+                    "primary": true
+                }
+            },
+            "render": {
+                "type": "custom",
+                "width": 10,
+                "height": 5,
+                "view": "pagerduty_view.display_oncall",
+                "title": "Get OnCall"
+            },
+            "output": [
+                {
+                    "data_path": "action_result.data.*.id",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.name",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.on_call.*.end",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.on_call.*.user.id",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.on_call.*.user.name",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.on_call.*.user.role",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.on_call.*.user.color",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.on_call.*.user.email",
+                    "data_type": "string",
+                    "contains": [
+                        "email"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.on_call.*.user.time_zone",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.on_call.*.level",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.data.*.on_call.*.start",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.summary.total_policies",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "action_result.parameter.team",
+                    "data_type": "string",
+                    "contains": [
+                        "pagerduty team"
+                    ]
+                },
+                {
+                    "data_path": "summary.total_objects",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric"
+                }
+            ],
+            "versions": "EQ(*)"
+        }
     ]
 }
