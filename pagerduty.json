@@ -28,7 +28,7 @@
         },
         "api_token": {
             "description": "API Key",
-            "data_type": "string",
+            "data_type": "password",
             "required": true,
             "order": 2
         }
