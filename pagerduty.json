@@ -12,7 +12,7 @@
     "product_vendor": "PagerDuty",
     "product_name": "PagerDuty",
     "product_version_regex": ".*",
-    "min_phantom_version": "3.0.190",
+    "min_phantom_version": "3.0.286",
     "logo": "logo_pagerduty.svg",
     "logo_dark": "logo_pagerduty_dark.svg",
     "configuration": {
@@ -47,7 +47,7 @@
         {
             "action": "list teams",
             "description": "Get list of teams configured on PagerDuty",
-            "type": "generic",
+            "type": "investigate",
             "identifier": "list_teams",
             "read_only": true,
             "parameters": {},
@@ -198,6 +198,768 @@
                 {
                     "data_path": "summary.total_objects_successful",
                     "data_type": "numeric"
+                }
+            ],
+            "versions": "EQ(*)"
+        },
+        {
+            "action": "list services",
+            "description": "Get list of available services on PagerDuty",
+            "type": "investigate",
+            "identifier": "list_services",
+            "read_only": true,
+            "parameters": {},
+            "render": {
+                "type": "table"
+            },
+            "output": [
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "example_values": [
+                        "success"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.status",
+                    "data_type": "string",
+                    "example_values": [
+                        "active"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.auto_resolve_timeout",
+                    "data_type": "numeric",
+                    "example_values": [
+                        14400
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.incident_urgency_rule.type",
+                    "data_type": "string",
+                    "example_values": [
+                        "constant"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.incident_urgency_rule.urgency",
+                    "data_type": "string",
+                    "example_values": [
+                        "high"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.type",
+                    "data_type": "string",
+                    "example_values": [
+                        "generic_events_api"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.name",
+                    "data_type": "string",
+                    "example_values": [
+                        "API Service"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.email_incident_creation",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.created_at",
+                    "data_type": "string",
+                    "example_values": [
+                        "2016-04-07T11:47:33-07:00"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.acknowledgement_timeout",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1800
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.support_hours",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.service_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "/services/P85HN53"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.last_incident_timestamp",
+                    "data_type": "string",
+                    "example_values": [
+                        "2016-05-20T10:14:34-07:00"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.email_filter_mode",
+                    "data_type": "string",
+                    "example_values": [
+                        "all-email"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.service_key",
+                    "data_type": "string",
+                    "example_values": [
+                        "3dab3e3857194b0790dfdb3765ed0376"
+                    ],
+                    "contains": [
+                        "md5"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.deleted_at",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.scheduled_actions",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.id",
+                    "data_type": "string",
+                    "example_values": [
+                        "P85HN53"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.incident_counts.resolved",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.incident_counts.total",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.incident_counts.acknowledged",
+                    "data_type": "numeric",
+                    "example_values": [
+                        0
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.incident_counts.triggered",
+                    "data_type": "numeric",
+                    "example_values": [
+                        0
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.description",
+                    "data_type": "string",
+                    "example_values": [
+                        "This service was created during onboarding on April 7, 2016."
+                    ]
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string",
+                    "example_values": [
+                        "Num services: 2"
+                    ]
+                },
+                {
+                    "data_path": "action_result.summary.num_services",
+                    "data_type": "numeric",
+                    "example_values": [
+                        2
+                    ]
+                },
+                {
+                    "data_path": "summary.total_objects",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                },
+                {
+                    "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                }
+            ],
+            "versions": "EQ(*)"
+        },
+        {
+            "action": "list users",
+            "description": "Get list of all users on PagerDuty",
+            "type": "investigate",
+            "identifier": "list_users",
+            "read_only": true,
+            "parameters": {},
+            "render": {
+                "type": "table"
+            },
+            "output": [
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "example_values": [
+                        "success"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.marketing_opt_out",
+                    "data_type": "boolean",
+                    "example_values": [
+                        true,
+                        false
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.name",
+                    "data_type": "string",
+                    "example_values": [
+                        "Herman Edwards"
+                    ],
+                    "column_name": "Name",
+                    "column_order": 1
+                },
+                {
+                    "data_path": "action_result.data.*.user_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "/users/PDQZBR8"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.color",
+                    "data_type": "string",
+                    "example_values": [
+                        "green"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.time_zone",
+                    "data_type": "string",
+                    "example_values": [
+                        "Central Time (US & Canada)"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.invitation_sent",
+                    "data_type": "boolean",
+                    "example_values": [
+                        true,
+                        false
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.email",
+                    "data_type": "string",
+                    "example_values": [
+                        "Herman@phantom.us"
+                    ],
+                    "contains": [
+                        "email"
+                    ],
+                    "column_name": "Email",
+                    "column_order": 2
+                },
+                {
+                    "data_path": "action_result.data.*.avatar_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://secure.gravatar.com/avatar/22469b872bd7db8e40871307f3c5ac49.png?d=mm&r=PG"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.role",
+                    "data_type": "string",
+                    "example_values": [
+                        "admin"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.billed",
+                    "data_type": "boolean",
+                    "example_values": [
+                        true,
+                        false
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.id",
+                    "data_type": "string",
+                    "example_values": [
+                        "PDQZBR8"
+                    ],
+                    "column_name": "ID",
+                    "column_order": 0
+                },
+                {
+                    "data_path": "action_result.data.*.job_title",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string",
+                    "example_values": [
+                        "Num users: 3"
+                    ]
+                },
+                {
+                    "data_path": "action_result.summary.num_users",
+                    "data_type": "numeric",
+                    "example_values": [
+                        3
+                    ]
+                },
+                {
+                    "data_path": "summary.total_objects",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                },
+                {
+                    "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                }
+            ],
+            "versions": "EQ(*)"
+        },
+        {
+            "action": "list policies",
+            "description": "Get list of all excalation policies on PagerDuty",
+            "type": "investigate",
+            "identifier": "list_escalations",
+            "read_only": true,
+            "parameters": {},
+            "render": {
+                "type": "table"
+            },
+            "output": [
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "example_values": [
+                        "success"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.description",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.num_loops",
+                    "data_type": "numeric",
+                    "example_values": [
+                        0
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.escalation_rules.*.escalation_delay_in_minutes",
+                    "data_type": "numeric",
+                    "example_values": [
+                        30
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.escalation_rules.*.rule_object.name",
+                    "data_type": "string",
+                    "example_values": [
+                        "Herman Edwards"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.escalation_rules.*.rule_object.color",
+                    "data_type": "string",
+                    "example_values": [
+                        "purple"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.escalation_rules.*.rule_object.time_zone",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.escalation_rules.*.rule_object.id",
+                    "data_type": "string",
+                    "example_values": [
+                        "P9GBXBY"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.escalation_rules.*.rule_object.type",
+                    "data_type": "string",
+                    "example_values": [
+                        "user"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.escalation_rules.*.rule_object.email",
+                    "data_type": "string",
+                    "example_values": [
+                        "herman@phantom.us"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.escalation_rules.*.id",
+                    "data_type": "string",
+                    "example_values": [
+                        "PIYD7AZ"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.escalation_rules.*.targets.*.name",
+                    "data_type": "string",
+                    "example_values": [
+                        "Herman Edwards"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.escalation_rules.*.targets.*.color",
+                    "data_type": "string",
+                    "example_values": [
+                        "purple"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.escalation_rules.*.targets.*.time_zone",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.escalation_rules.*.targets.*.id",
+                    "data_type": "string",
+                    "example_values": [
+                        "P9GBXBY"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.escalation_rules.*.targets.*.type",
+                    "data_type": "string",
+                    "example_values": [
+                        "user"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.escalation_rules.*.targets.*.email",
+                    "data_type": "string",
+                    "example_values": [
+                        "herman@phantom.us"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.services",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.id",
+                    "data_type": "string",
+                    "example_values": [
+                        "PEEMY9J"
+                    ],
+                    "column_name": "ID",
+                    "column_order": 0
+                },
+                {
+                    "data_path": "action_result.data.*.name",
+                    "data_type": "string",
+                    "example_values": [
+                        "Default"
+                    ],
+                    "column_name": "Name",
+                    "column_order": 1
+                },
+                {
+                    "data_path": "action_result.data.*.services.*.status",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.services.*.auto_resolve_timeout",
+                    "data_type": "numeric",
+                    "example_values": [
+                        14400
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.services.*.incident_urgency_rule.type",
+                    "data_type": "string",
+                    "example_values": [
+                        "constant"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.services.*.incident_urgency_rule.urgency",
+                    "data_type": "string",
+                    "example_values": [
+                        "high"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.services.*.type",
+                    "data_type": "string",
+                    "example_values": [
+                        "generic_events_api"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.services.*.name",
+                    "data_type": "string",
+                    "example_values": [
+                        "API Service"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.services.*.email_incident_creation",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.services.*.created_at",
+                    "data_type": "string",
+                    "example_values": [
+                        "2016-04-07T11:47:33-07:00"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.services.*.acknowledgement_timeout",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1800
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.services.*.support_hours",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.services.*.service_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "/services/P85HN53"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.services.*.last_incident_timestamp",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.services.*.email_filter_mode",
+                    "data_type": "string",
+                    "example_values": [
+                        "all-email"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.services.*.service_key",
+                    "data_type": "string",
+                    "example_values": [
+                        "3dab3e3857194b0790dfdb3765ed0376"
+                    ],
+                    "contains": [
+                        "md5"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.services.*.deleted_at",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.services.*.scheduled_actions",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.services.*.id",
+                    "data_type": "string",
+                    "example_values": [
+                        "P85HN53"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.services.*.incident_counts",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.services.*.description",
+                    "data_type": "string",
+                    "example_values": [
+                        "This service was created during onboarding on April 7, 2016."
+                    ]
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string",
+                    "example_values": [
+                        "Num policies: 3"
+                    ]
+                },
+                {
+                    "data_path": "action_result.summary.num_policies",
+                    "data_type": "numeric",
+                    "example_values": [
+                        3
+                    ]
+                },
+                {
+                    "data_path": "summary.total_objects",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                },
+                {
+                    "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                }
+            ],
+            "versions": "EQ(*)"
+        },
+        {
+            "action": "create incident",
+            "description": "Create an incident on PagerDuty",
+            "verbose": "Either the <b>escalation_id</b> or the <b>assignee_id</b> parameter can be used to provide notification and assignment settings to the incident. If neither is provided, the default escalation policy on the PagerDuty system will be used.<br><br>If both are provided, the <b>escalation_id</b> will be used.",
+            "type": "generic",
+            "identifier": "create_incident",
+            "read_only": false,
+            "parameters": {
+                "title": {
+                    "description": "Title of incident",
+                    "data_type": "string",
+                    "required": true,
+                    "order": 0
+                },
+                "description": {
+                    "description": "Description of incident",
+                    "data_type": "string",
+                    "required": true,
+                    "order": 1
+                },
+                "service_id": {
+                    "description": "ID of impacted service",
+                    "data_type": "string",
+                    "required": true,
+                    "order": 2
+                },
+                "ph": {
+                    "data_type": "ph",
+                    "order": 3
+                },
+                "escalation_id": {
+                    "description": "ID of escalation policy to use",
+                    "data_type": "string",
+                    "required": false,
+                    "order": 4
+                },
+                "assignee_id": {
+                    "description": "ID of user to assign incident to",
+                    "data_type": "string",
+                    "required": false,
+                    "order": 5
+                }
+            },
+            "render": {
+                "type": "table"
+            },
+            "output": [
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "example_values": [
+                        "success"
+                    ],
+                    "column_name": "Status",
+                    "column_order": 0
+                },
+                {
+                    "data_path": "action_result.data",
+                    "data_type": "string",
+                    "example_values": []
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string",
+                    "example_values": [
+                        "Incident key: 86f03691406c4f5299ca1b06509b57ca",
+                        "Incident key: 22c20aeb7819414fb91db31493c7f16e"
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.service_id",
+                    "data_type": "string",
+                    "example_values": [
+                        "PXVZTZ7"
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.escalation_id",
+                    "data_type": "string",
+                    "example_values": [
+                        "PU957QU"
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.description",
+                    "data_type": "string",
+                    "example_values": [
+                        "Fix it"
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.title",
+                    "data_type": "string",
+                    "example_values": [
+                        "It is broken"
+                    ]
+                },
+                {
+                    "data_path": "action_result.summary.incident_key",
+                    "data_type": "string",
+                    "example_values": [
+                        "86f03691406c4f5299ca1b06509b57ca",
+                        "22c20aeb7819414fb91db31493c7f16e"
+                    ],
+                    "contains": [
+                        "md5"
+                    ],
+                    "column_name": "Incident Key",
+                    "column_order": 1
+                },
+                {
+                    "data_path": "summary.total_objects",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                },
+                {
+                    "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.assignee_id",
+                    "data_type": "string",
+                    "example_values": [
+                        "PG4RNZ3"
+                    ]
                 }
             ],
             "versions": "EQ(*)"
