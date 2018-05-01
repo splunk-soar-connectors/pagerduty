@@ -42,6 +42,7 @@ class PagerDutyConnector(BaseConnector):
     ACTION_ID_LIST_USERS = "list_users"
     ACTION_ID_LIST_TEAMS = "list_teams"
     ACTION_ID_GET_ONCALL = "get_pd_oncall"
+    ACTION_ID_LIST_ONCALLS = "list_oncalls"
     ACTION_ID_LIST_SERVICES = "list_services"
     ACTION_ID_CREATE_INCIDENT = "create_incident"
     ACTION_ID_LIST_ESCALATIONS = "list_escalations"
@@ -183,6 +184,25 @@ class PagerDutyConnector(BaseConnector):
 
         return action_result.set_status(phantom.APP_SUCCESS)
 
+    def _handle_list_oncalls(self, param):
+
+        # Add an action result to the App Run
+        action_result = self.add_action_result(ActionResult(dict(param)))
+
+        ret_val, resp_data = self._make_rest_call('/oncalls', action_result)
+
+        if phantom.is_fail(ret_val):
+            return action_result.get_status()
+
+        oncalls = resp_data.get('oncalls')
+
+        for oncall in oncalls:
+            action_result.add_data(oncall)
+
+        action_result.update_summary({'num_oncalls': len(oncalls)})
+
+        return action_result.set_status(phantom.APP_SUCCESS)
+
     def _handle_list_teams(self, param):
 
         # Add an action result to the App Run
@@ -210,7 +230,12 @@ class PagerDutyConnector(BaseConnector):
         # Add an action result to the App Run
         action_result = self.add_action_result(ActionResult(dict(param)))
 
-        ret_val, resp_data = self._make_rest_call('/services', action_result)
+        params = {}
+
+        if 'team_ids' in param:
+            params['team_ids[]'] = param['team_ids']
+
+        ret_val, resp_data = self._make_rest_call('/services', action_result, params=params)
 
         if phantom.is_fail(ret_val):
             return action_result.get_status()
@@ -229,7 +254,12 @@ class PagerDutyConnector(BaseConnector):
         # Add an action result to the App Run
         action_result = self.add_action_result(ActionResult(dict(param)))
 
-        ret_val, resp_data = self._make_rest_call('/users', action_result)
+        params = {}
+
+        if 'team_ids' in param:
+            params['team_ids[]'] = param['team_ids']
+
+        ret_val, resp_data = self._make_rest_call('/users', action_result, params=params)
 
         if phantom.is_fail(ret_val):
             return action_result.get_status()
@@ -248,7 +278,14 @@ class PagerDutyConnector(BaseConnector):
         # Add an action result to the App Run
         action_result = self.add_action_result(ActionResult(dict(param)))
 
-        ret_val, resp_data = self._make_rest_call('/escalation_policies', action_result)
+        params = {}
+
+        if 'user_ids' in param:
+            params['user_ids[]'] = param['user_ids']
+        if 'team_ids' in param:
+            params['team_ids[]'] = param['team_ids']
+
+        ret_val, resp_data = self._make_rest_call('/escalation_policies', action_result, params=params)
 
         if phantom.is_fail(ret_val):
             return action_result.get_status()
@@ -311,6 +348,8 @@ class PagerDutyConnector(BaseConnector):
             ret_val = self._handle_list_teams(param)
         elif action_id == self.ACTION_ID_LIST_USERS:
             ret_val = self._handle_list_users(param)
+        elif action_id == self.ACTION_ID_LIST_ONCALLS:
+            ret_val = self._handle_list_oncalls(param)
         elif action_id == self.ACTION_ID_LIST_SERVICES:
             ret_val = self._handle_list_services(param)
         elif action_id == self.ACTION_ID_CREATE_INCIDENT:
