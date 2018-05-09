@@ -117,11 +117,14 @@ class PagerDutyConnector(BaseConnector):
 
         return RetVal4(phantom.APP_SUCCESS, status_code, resp_type, resp_data)
 
-    def _make_rest_call(self, endpoint, result, params={}, headers={}, data=None, method="get"):
+    def _make_rest_call(self, endpoint, result, params=None, headers=None, data=None, method="get"):
 
         url = "{0}{1}".format(self._rest_url, endpoint)
 
-        headers.update(self._headers)
+        if headers:
+            headers.update(self._headers)
+        else:
+            headers = self._headers
 
         request_func = getattr(requests, method)
 
@@ -324,7 +327,7 @@ class PagerDutyConnector(BaseConnector):
         elif 'assignee_id' in param:
             body["assignments"] = [{"assignee": {"id": "assignee_id", "type": "user"}}]
 
-        ret_val, resp_data = self._make_rest_call('/incidents', action_result, data=body, method='post')
+        ret_val, resp_data = self._make_rest_call('/incidents', action_result, data=body, headers={'From': param['email']}, method='post')
 
         if phantom.is_fail(ret_val):
             return action_result.get_status()
