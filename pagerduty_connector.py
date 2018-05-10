@@ -86,11 +86,26 @@ class PagerDutyConnector(BaseConnector):
             result.add_debug_data({'r_text': r.text if r else 'r is None'})
 
         if 'json' in content_type:
+
             # Try a json parse
             try:
                 resp_data = r.json()
             except:
                 result.set_status(phantom.APP_ERROR, "Unable to parse response as a JSON status_code: {0}, data: {1}".format(r.status_code, self._normalize_text(r.text)))
+
+            error = resp_data.get('error')
+            if error:
+
+                if error.get('code', -1) == 2016:
+                    return RetVal4(result.set_status(phantom.APP_ERROR, "The email parameter is required to create incidents on this PagerDuty instance"), None, None, None)
+
+                error_message = "message: {0}, code: {1}, details: {2}".format(
+                        error.get('message', 'None'),
+                        error.get('code', 'None'),
+                        '\n'.join(error.get('errors', [])))
+
+                return RetVal4(result.set_status(phantom.APP_ERROR, "Error detected, status_code: {0}, data: {1}".format(r.status_code, error_message)), None, None, None)
+
         elif 'html' in content_type:
             try:
                 soup = BeautifulSoup(r.text, "html.parser")
@@ -101,17 +116,7 @@ class PagerDutyConnector(BaseConnector):
         else:
             resp_data = r.text
 
-        # Look for errors
-        if 'json' in content_type:
-            error = resp_data.get('error')
-            if (error):
-                error_message = "message: {0}, code: {1}, details: {2}".format(
-                        error.get('message', 'None'),
-                        error.get('code', 'None'),
-                        '\n'.join(error.get('errors', [])))
-                return RetVal4(result.set_status(phantom.APP_ERROR, "Error detected, status_code: {0}, data: {1}".format(r.status_code, error_message)), None, None, None)
-
-        if not ( 200 <= r.status_code < 300):
+        if not (200 <= r.status_code < 300):
             return RetVal4(result.set_status(phantom.APP_ERROR, "Call returned error, status_code: {0}, data: {1}"
                     .format(r.status_code, self._normalize_text(r.text))), None, None, None)
 
@@ -327,7 +332,11 @@ class PagerDutyConnector(BaseConnector):
         elif 'assignee_id' in param:
             body["assignments"] = [{"assignee": {"id": "assignee_id", "type": "user"}}]
 
-        ret_val, resp_data = self._make_rest_call('/incidents', action_result, data=body, headers={'From': param['email']}, method='post')
+        headers = {}
+        if 'email' in param:
+            headers['From'] = param['email']
+
+        ret_val, resp_data = self._make_rest_call('/incidents', action_result, data=body, headers=headers, method='post')
 
         if phantom.is_fail(ret_val):
             return action_result.get_status()

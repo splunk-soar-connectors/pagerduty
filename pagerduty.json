@@ -1100,7 +1100,7 @@
         {
             "action": "create incident",
             "description": "Create an incident on PagerDuty",
-            "verbose": "Either the <b>escalation_id</b> or the <b>assignee_id</b> parameter can be used to provide notification and assignment settings to the incident. If neither is provided, the default escalation policy on the PagerDuty system will be used.<br><br>If both are provided, the <b>escalation_id</b> will be used.",
+            "verbose": "The <b>email</b> parameter may be required to create an incident depending on the configuration of the PagerDuty instance.<br><br>Either the <b>escalation_id</b> or the <b>assignee_id</b> parameter can be used to provide notification and assignment settings to the incident. If neither is provided, the default escalation policy on the PagerDuty system will be used.<br><br>If both are provided, the <b>escalation_id</b> will be used.",
             "type": "generic",
             "identifier": "create_incident",
             "read_only": false,
@@ -1130,7 +1130,7 @@
                 "email": {
                     "description": "Email of user creating incident",
                     "data_type": "string",
-                    "required": true,
+                    "required": false,
                     "contains": [
                         "email"
                     ],
@@ -1212,6 +1212,16 @@
                     "data_type": "string",
                     "example_values": [
                         "It is broken"
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.email",
+                    "data_type": "string",
+                    "contains": [
+                        "email"
+                    ],
+                    "example_values": [
+                        "herman@phantom.us"
                     ]
                 },
                 {
