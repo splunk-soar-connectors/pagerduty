@@ -60,11 +60,15 @@
             "output": [
                 {
                     "data_path": "action_result.status",
-                    "data_type": "string"
+                    "data_type": "string",
+                    "example_values": [
+                        "success"
+                    ]
                 },
                 {
                     "data_path": "action_result.data.*.description",
-                    "data_type": "string"
+                    "data_type": "string",
+                    "example_values": []
                 },
                 {
                     "data_path": "action_result.data.*.id",
@@ -73,7 +77,10 @@
                         "pagerduty team id"
                     ],
                     "column_name": "ID",
-                    "column_order": 1
+                    "column_order": 1,
+                    "example_values": [
+                        "P3Y9EUF"
+                    ]
                 },
                 {
                     "data_path": "action_result.data.*.name",
@@ -82,23 +89,84 @@
                         "pagerduty team"
                     ],
                     "column_name": "Name",
-                    "column_order": 0
+                    "column_order": 0,
+                    "example_values": [
+                        "IT"
+                    ]
                 },
                 {
                     "data_path": "action_result.summary.total_teams",
-                    "data_type": "numeric"
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
                 },
                 {
                     "data_path": "action_result.message",
-                    "data_type": "string"
+                    "data_type": "string",
+                    "example_values": [
+                        "Total teams: 1"
+                    ]
                 },
                 {
                     "data_path": "summary.total_objects",
-                    "data_type": "numeric"
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
                 },
                 {
                     "data_path": "summary.total_objects_successful",
-                    "data_type": "numeric"
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.parent",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.default_role",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.self",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.pagerduty.com/teams/P3Y9EUF"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.html_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://phantomlab.pagerduty.com/teams/P3Y9EUF"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.summary",
+                    "data_type": "string",
+                    "example_values": [
+                        "IT"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.privilege",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.type",
+                    "data_type": "string",
+                    "example_values": [
+                        "team"
+                    ]
                 }
             ],
             "versions": "EQ(*)"
@@ -511,7 +579,8 @@
                     "data_path": "action_result.data.*.last_incident_timestamp",
                     "data_type": "string",
                     "example_values": [
-                        "2016-05-20T10:14:34-07:00"
+                        "2016-05-20T10:14:34-07:00",
+                        "2018-05-11T17:26:17-07:00"
                     ]
                 },
                 {
@@ -525,7 +594,8 @@
                 },
                 {
                     "data_path": "action_result.data.*.scheduled_actions",
-                    "data_type": "string"
+                    "data_type": "string",
+                    "example_values": []
                 },
                 {
                     "data_path": "action_result.data.*.service_key",
@@ -553,13 +623,15 @@
                 },
                 {
                     "data_path": "action_result.data.*.support_hours",
-                    "data_type": "string"
+                    "data_type": "string",
+                    "example_values": []
                 },
                 {
                     "data_path": "action_result.data.*.type",
                     "data_type": "string",
                     "example_values": [
-                        "generic_events_api"
+                        "generic_events_api",
+                        "service"
                     ]
                 },
                 {
@@ -589,6 +661,183 @@
                     "example_values": [
                         1
                     ]
+                },
+                {
+                    "data_path": "action_result.data.*.alert_creation",
+                    "data_type": "string",
+                    "example_values": [
+                        "create_incidents"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.integrations.*.self",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.pagerduty.com/services/P85HN53/integrations/PDG5H2O"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.integrations.*.summary",
+                    "data_type": "string",
+                    "example_values": [
+                        "API"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.integrations.*.type",
+                    "data_type": "string",
+                    "example_values": [
+                        "generic_events_api_inbound_integration_reference"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.integrations.*.id",
+                    "data_type": "string",
+                    "example_values": [
+                        "PDG5H2O"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.integrations.*.html_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://phantomlab.pagerduty.com/services/P85HN53/integrations/PDG5H2O"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.summary",
+                    "data_type": "string",
+                    "example_values": [
+                        "API Service"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.alert_grouping",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.alert_grouping_timeout",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.escalation_policy.self",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.pagerduty.com/escalation_policies/PE0BI2T"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.escalation_policy.summary",
+                    "data_type": "string",
+                    "example_values": [
+                        "IT Escalation Policy"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.escalation_policy.type",
+                    "data_type": "string",
+                    "example_values": [
+                        "escalation_policy_reference"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.escalation_policy.id",
+                    "data_type": "string",
+                    "example_values": [
+                        "PE0BI2T"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.escalation_policy.html_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://phantomlab.pagerduty.com/escalation_policies/PE0BI2T"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.self",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.pagerduty.com/services/P85HN53"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.response_play",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.privilege",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.html_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://phantomlab.pagerduty.com/services/P85HN53"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.teams.*.self",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.pagerduty.com/teams/P3Y9EUF"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.teams.*.summary",
+                    "data_type": "string",
+                    "example_values": [
+                        "IT"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.teams.*.type",
+                    "data_type": "string",
+                    "example_values": [
+                        "team_reference"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.teams.*.id",
+                    "data_type": "string",
+                    "example_values": [
+                        "P3Y9EUF"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.teams.*.html_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://phantomlab.pagerduty.com/teams/P3Y9EUF"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.addons",
+                    "data_type": "string"
                 }
             ],
             "versions": "EQ(*)"
@@ -825,7 +1074,8 @@
                 },
                 {
                     "data_path": "action_result.data.*.description",
-                    "data_type": "string"
+                    "data_type": "string",
+                    "example_values": []
                 },
                 {
                     "data_path": "action_result.data.*.escalation_rules.*.escalation_delay_in_minutes",
@@ -916,7 +1166,8 @@
                     "data_path": "action_result.data.*.escalation_rules.*.targets.*.type",
                     "data_type": "string",
                     "example_values": [
-                        "user"
+                        "user",
+                        "user_reference"
                     ]
                 },
                 {
@@ -949,7 +1200,8 @@
                 },
                 {
                     "data_path": "action_result.data.*.services",
-                    "data_type": "string"
+                    "data_type": "string",
+                    "example_values": []
                 },
                 {
                     "data_path": "action_result.data.*.services.*.acknowledgement_timeout",
@@ -1063,7 +1315,8 @@
                     "data_path": "action_result.data.*.services.*.type",
                     "data_type": "string",
                     "example_values": [
-                        "generic_events_api"
+                        "generic_events_api",
+                        "service_reference"
                     ]
                 },
                 {
@@ -1092,6 +1345,143 @@
                     "data_type": "numeric",
                     "example_values": [
                         1
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.self",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.pagerduty.com/escalation_policies/PEEMY9J"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.html_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://phantomlab.pagerduty.com/escalation_policies/PEEMY9J"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.teams",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.escalation_rules.*.targets.*.self",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.pagerduty.com/users/P9GBXBY"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.escalation_rules.*.targets.*.summary",
+                    "data_type": "string",
+                    "example_values": [
+                        "Herman Edwards"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.escalation_rules.*.targets.*.html_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://phantomlab.pagerduty.com/users/P9GBXBY"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.privilege",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.summary",
+                    "data_type": "string",
+                    "example_values": [
+                        "Default"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.type",
+                    "data_type": "string",
+                    "example_values": [
+                        "escalation_policy"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.teams.*.self",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.pagerduty.com/teams/P3Y9EUF"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.teams.*.summary",
+                    "data_type": "string",
+                    "example_values": [
+                        "IT"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.teams.*.type",
+                    "data_type": "string",
+                    "example_values": [
+                        "team_reference"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.teams.*.id",
+                    "data_type": "string",
+                    "example_values": [
+                        "P3Y9EUF"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.teams.*.html_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://phantomlab.pagerduty.com/teams/P3Y9EUF"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.services.*.self",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.pagerduty.com/services/P85HN53"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.services.*.summary",
+                    "data_type": "string",
+                    "example_values": [
+                        "API Service"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.services.*.html_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://phantomlab.pagerduty.com/services/P85HN53"
+                    ],
+                    "contains": [
+                        "url"
                     ]
                 }
             ],
