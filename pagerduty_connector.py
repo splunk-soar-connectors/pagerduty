@@ -26,12 +26,26 @@ import requests
 from bs4 import BeautifulSoup
 
 
+class RetVal4(tuple):
+    def __new__(cls, val1, val2, val3, val4):
+        return tuple.__new__(RetVal4, (val1, val2, val3, val4))
+
+
+class RetVal2(tuple):
+    def __new__(cls, val1, val2):
+        return tuple.__new__(RetVal2, (val1, val2))
+
+
 # Define the App Class
 class PagerDutyConnector(BaseConnector):
 
-    ACTION_ID_GET_ONCALL = "get_pd_oncall"
+    ACTION_ID_LIST_USERS = "list_users"
     ACTION_ID_LIST_TEAMS = "list_teams"
-    ACTION_ID_ASSIGN_ONCALL = "assign_to_oncall"
+    ACTION_ID_GET_ONCALL = "get_pd_oncall"
+    ACTION_ID_LIST_ONCALLS = "list_oncalls"
+    ACTION_ID_LIST_SERVICES = "list_services"
+    ACTION_ID_CREATE_INCIDENT = "create_incident"
+    ACTION_ID_LIST_ESCALATIONS = "list_escalations"
 
     def __init__(self):
 
@@ -55,7 +69,7 @@ class PagerDutyConnector(BaseConnector):
         return phantom.APP_SUCCESS
 
     def _normalize_text(self, text):
-        return text.replace('}', '').replace('{', '')
+        return text.replace('}', '}}').replace('{', '{{')
 
     def _parse_response(self, result, r):
 
@@ -68,16 +82,31 @@ class PagerDutyConnector(BaseConnector):
         resp_data = None
 
         # It's ok if r.text is None, dump that, if the result object supports recording it
-        if (hasattr(result, 'add_debug_data')):
+        if hasattr(result, 'add_debug_data'):
             result.add_debug_data({'r_text': r.text if r else 'r is None'})
 
-        if ('json' in content_type):
+        if 'json' in content_type:
+
             # Try a json parse
             try:
                 resp_data = r.json()
             except:
                 result.set_status(phantom.APP_ERROR, "Unable to parse response as a JSON status_code: {0}, data: {1}".format(r.status_code, self._normalize_text(r.text)))
-        elif('html' in content_type):
+
+            error = resp_data.get('error')
+            if error:
+
+                if error.get('code', -1) == 2016:
+                    return RetVal4(result.set_status(phantom.APP_ERROR, "The email parameter is required to create incidents on this PagerDuty instance"), None, None, None)
+
+                error_message = "message: {0}, code: {1}, details: {2}".format(
+                        error.get('message', 'None'),
+                        error.get('code', 'None'),
+                        '\n'.join(error.get('errors', [])))
+
+                return RetVal4(result.set_status(phantom.APP_ERROR, "Error detected, status_code: {0}, data: {1}".format(r.status_code, error_message)), None, None, None)
+
+        elif 'html' in content_type:
             try:
                 soup = BeautifulSoup(r.text, "html.parser")
                 resp_data = soup.text
@@ -87,47 +116,41 @@ class PagerDutyConnector(BaseConnector):
         else:
             resp_data = r.text
 
-        # Look for errors
-        if ('json' in content_type):
-            error = resp_data.get('error')
-            if (error):
-                error_message = "message: {0}, code: {1}, details: {2}".format(
-                        error.get('message', 'None'),
-                        error.get('code', 'None'),
-                        '\n'.join(error.get('errors', [])))
-                return result.set_status(phantom.APP_ERROR, "Error detected, status_code: {0}, {1}".format(r.status_code, error_message))
+        if not (200 <= r.status_code < 300):
+            return RetVal4(result.set_status(phantom.APP_ERROR, "Call returned error, status_code: {0}, data: {1}"
+                    .format(r.status_code, self._normalize_text(r.text))), None, None, None)
 
-        if (not ( 200 <= r.status_code < 300)):
-            return result.set_status(phantom.APP_ERROR, "Call returned error, status_code: {0}, data: {1}".format(r.status_code, self._normalize_text(r.text)))
+        return RetVal4(phantom.APP_SUCCESS, status_code, resp_type, resp_data)
 
-        return (phantom.APP_SUCCESS, status_code, resp_type, resp_data)
-
-    def _make_rest_call(self, endpoint, result, params={}, headers={}, data=None, method="get"):
+    def _make_rest_call(self, endpoint, result, params=None, headers=None, data=None, method="get"):
 
         url = "{0}{1}".format(self._rest_url, endpoint)
 
-        headers.update(self._headers)
+        if headers:
+            headers.update(self._headers)
+        else:
+            headers = self._headers
 
         request_func = getattr(requests, method)
 
-        if (not request_func):
-            return (result.set_status(phantom.APP_ERROR, "Invalid method call: {0} for requests module".format(method)), None)
+        if not request_func:
+            return RetVal2(result.set_status(phantom.APP_ERROR, "Invalid method call: {0} for requests module".format(method)), None)
 
-        if (data is not None):
+        if data is not None:
             data = json.dumps(data)
 
         try:
             r = request_func(url, headers=headers, params=params, data=data)
         except Exception as e:
-            return (result.set_status(phantom.APP_ERROR, "REST Api to server failed", e), None)
+            return RetVal2(result.set_status(phantom.APP_ERROR, "REST Api to server failed", e), None)
 
         ret_val, status_code, resp_type, resp_data = self._parse_response(result, r)
 
         # Any http or parsing error is handled by the _parse_response function
-        if (phantom.is_fail(ret_val)):
-            return (result.get_status(), resp_data)
+        if phantom.is_fail(ret_val):
+            return RetVal2(result.get_status(), resp_data)
 
-        return (phantom.APP_SUCCESS, resp_data)
+        return RetVal2(phantom.APP_SUCCESS, resp_data)
 
     def _test_connectivity(self, param):
 
@@ -136,7 +159,7 @@ class PagerDutyConnector(BaseConnector):
         params = { "limit": 1 }
         ret_val, resp_data = self._make_rest_call('/incidents', self, params)
 
-        if (phantom.is_fail(ret_val)):
+        if phantom.is_fail(ret_val):
             self.append_to_message('Test connectivity failed')
             return self.get_status()
 
@@ -150,12 +173,12 @@ class PagerDutyConnector(BaseConnector):
         params = { "query": param['team'] }
         ret_val, resp_data = self._make_rest_call('/escalation_policies/on_call', action_result, params)
 
-        if (phantom.is_fail(ret_val)):
+        if phantom.is_fail(ret_val):
             return action_result.get_status()
 
         policies = resp_data.get('escalation_policies')
 
-        if (not policies):
+        if not policies:
             return action_result.set_status(phantom.APP_ERROR, 'No Escalation policies configured')
 
         wanted_keys = ['id', 'name', 'on_call']
@@ -169,6 +192,25 @@ class PagerDutyConnector(BaseConnector):
 
         return action_result.set_status(phantom.APP_SUCCESS)
 
+    def _handle_list_oncalls(self, param):
+
+        # Add an action result to the App Run
+        action_result = self.add_action_result(ActionResult(dict(param)))
+
+        ret_val, resp_data = self._make_rest_call('/oncalls', action_result)
+
+        if phantom.is_fail(ret_val):
+            return action_result.get_status()
+
+        oncalls = resp_data.get('oncalls')
+
+        for oncall in oncalls:
+            action_result.add_data(oncall)
+
+        action_result.update_summary({'num_oncalls': len(oncalls)})
+
+        return action_result.set_status(phantom.APP_SUCCESS)
+
     def _handle_list_teams(self, param):
 
         # Add an action result to the App Run
@@ -176,18 +218,130 @@ class PagerDutyConnector(BaseConnector):
 
         ret_val, resp_data = self._make_rest_call('/teams', action_result)
 
-        if (phantom.is_fail(ret_val)):
+        if phantom.is_fail(ret_val):
             return action_result.get_status()
 
         teams = resp_data.get('teams')
 
-        if (not teams):
+        if not teams:
             return action_result.set_status(phantom.APP_ERROR, 'No teams configured')
 
         for team in teams:
             action_result.add_data(team)
 
         action_result.update_summary({'total_teams': len(teams)})
+
+        return action_result.set_status(phantom.APP_SUCCESS)
+
+    def _handle_list_services(self, param):
+
+        # Add an action result to the App Run
+        action_result = self.add_action_result(ActionResult(dict(param)))
+
+        params = {}
+
+        if 'team_ids' in param:
+            params['team_ids[]'] = param['team_ids']
+
+        ret_val, resp_data = self._make_rest_call('/services', action_result, params=params)
+
+        if phantom.is_fail(ret_val):
+            return action_result.get_status()
+
+        services = resp_data.get('services', [])
+
+        for service in services:
+            action_result.add_data(service)
+
+        action_result.update_summary({'num_services': len(services)})
+
+        return action_result.set_status(phantom.APP_SUCCESS)
+
+    def _handle_list_users(self, param):
+
+        # Add an action result to the App Run
+        action_result = self.add_action_result(ActionResult(dict(param)))
+
+        params = {}
+
+        if 'team_ids' in param:
+            params['team_ids[]'] = param['team_ids']
+
+        ret_val, resp_data = self._make_rest_call('/users', action_result, params=params)
+
+        if phantom.is_fail(ret_val):
+            return action_result.get_status()
+
+        users = resp_data.get('users', [])
+
+        for user in users:
+            action_result.add_data(user)
+
+        action_result.update_summary({'num_users': len(users)})
+
+        return action_result.set_status(phantom.APP_SUCCESS)
+
+    def _handle_list_escalations(self, param):
+
+        # Add an action result to the App Run
+        action_result = self.add_action_result(ActionResult(dict(param)))
+
+        params = {}
+
+        if 'user_ids' in param:
+            params['user_ids[]'] = param['user_ids']
+        if 'team_ids' in param:
+            params['team_ids[]'] = param['team_ids']
+
+        ret_val, resp_data = self._make_rest_call('/escalation_policies', action_result, params=params)
+
+        if phantom.is_fail(ret_val):
+            return action_result.get_status()
+
+        esc_pols = resp_data.get('escalation_policies', [])
+
+        for esc_pol in esc_pols:
+            action_result.add_data(esc_pol)
+
+        action_result.update_summary({'num_policies': len(esc_pols)})
+
+        return action_result.set_status(phantom.APP_SUCCESS)
+
+    def _handle_create_incident(self, param):
+
+        # Add an action result to the App Run
+        action_result = self.add_action_result(ActionResult(dict(param)))
+
+        body = {
+                    "incident": {
+                        "type": "incident",
+                        "title": param["title"],
+                        "service": {
+                            "id": param["service_id"],
+                            "type": "service"
+                        },
+                        "body": {
+                            "type": "incident_body",
+                            "details": param["description"]
+                        }
+                    }
+               }
+
+        if 'escalation_id' in param:
+            body["escalation_policy"] = {"id": param["escalation_id"], "type": "escalation_policy"}
+        elif 'assignee_id' in param:
+            body["assignments"] = [{"assignee": {"id": "assignee_id", "type": "user"}}]
+
+        headers = {}
+        if 'email' in param:
+            headers['From'] = param['email']
+
+        ret_val, resp_data = self._make_rest_call('/incidents', action_result, data=body, headers=headers, method='post')
+
+        if phantom.is_fail(ret_val):
+            return action_result.get_status()
+
+        action_result.update_summary({'incident_key': resp_data.get('incident', {}).get('incident_key', "Unknown")})
 
         return action_result.set_status(phantom.APP_SUCCESS)
 
@@ -200,14 +354,25 @@ class PagerDutyConnector(BaseConnector):
 
         self.debug_print("action_id", self.get_action_identifier())
 
-        if (action_id == self.ACTION_ID_GET_ONCALL):
+        if action_id == self.ACTION_ID_GET_ONCALL:
             ret_val = self._handle_get_oncall(param)
-        if (action_id == self.ACTION_ID_LIST_TEAMS):
+        elif action_id == self.ACTION_ID_LIST_TEAMS:
             ret_val = self._handle_list_teams(param)
-        elif (action_id == phantom.ACTION_ID_TEST_ASSET_CONNECTIVITY):
+        elif action_id == self.ACTION_ID_LIST_USERS:
+            ret_val = self._handle_list_users(param)
+        elif action_id == self.ACTION_ID_LIST_ONCALLS:
+            ret_val = self._handle_list_oncalls(param)
+        elif action_id == self.ACTION_ID_LIST_SERVICES:
+            ret_val = self._handle_list_services(param)
+        elif action_id == self.ACTION_ID_CREATE_INCIDENT:
+            ret_val = self._handle_create_incident(param)
+        elif action_id == self.ACTION_ID_LIST_ESCALATIONS:
+            ret_val = self._handle_list_escalations(param)
+        elif action_id == phantom.ACTION_ID_TEST_ASSET_CONNECTIVITY:
             ret_val = self._test_connectivity(param)
 
         return ret_val
+
 
 if __name__ == '__main__':
 
