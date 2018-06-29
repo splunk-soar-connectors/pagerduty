@@ -174,7 +174,7 @@
         {
             "action": "get oncall",
             "description": "Get the current on call personnel (DEPRECATED)",
-            "verbose": "DEPRECATED: Please use <b>get oncall users</b> instead.",
+            "verbose": "DEPRECATED: Please use <b>get oncall user</b> instead.",
             "type": "generic",
             "identifier": "get_pd_oncall",
             "read_only": true,
@@ -1661,7 +1661,7 @@
             "action": "get oncall user",
             "description": "Get list of users for a specific escalation policy",
             "verbose": "Finds the list of users associated with the <b>escalation_id</b>.",
-            "type": "generic",
+            "type": "investigate",
             "identifier": "get_oncall_user",
             "read_only": true,
             "parameters": {
@@ -1772,7 +1772,7 @@
             "action": "get user info",
             "description": "Get information on a particular user",
             "verbose": "Finds name, email, and all other information on a given <b>user_id</b>.",
-            "type": "generic",
+            "type": "investigate",
             "identifier": "get_user_info",
             "read_only": true,
             "parameters": {

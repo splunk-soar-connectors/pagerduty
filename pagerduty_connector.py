@@ -176,7 +176,7 @@ class PagerDutyConnector(BaseConnector):
         ret_val, resp_data = self._make_rest_call('/escalation_policies/on_call', action_result, params)
 
         if phantom.is_fail(ret_val):
-            return action_result.set_status(phantom.APP_ERROR, 'DEPRECATED: Please use "get oncall users" instead.')
+            return action_result.set_status(phantom.APP_ERROR, 'DEPRECATED: Please use "get oncall user" instead.')
 
         policies = resp_data.get('escalation_policies')
 
@@ -353,10 +353,7 @@ class PagerDutyConnector(BaseConnector):
         action_result = self.add_action_result(ActionResult(dict(param)))
 
         # Setup params
-        params = {}
-
-        if 'escalation_id' in param:
-            params['escalation_policy_ids[]'] = param['escalation_id']
+        params = {'escalation_policy_ids[]': param['escalation_id']}
 
         # Find user IDs associated with escalation ID
         ret_val, resp_data_oncalls = self._make_rest_call('/oncalls', action_result, params=params)
