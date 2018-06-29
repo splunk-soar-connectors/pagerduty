@@ -176,7 +176,7 @@ class PagerDutyConnector(BaseConnector):
         ret_val, resp_data = self._make_rest_call('/escalation_policies/on_call', action_result, params)
 
         if phantom.is_fail(ret_val):
-            return action_result.set_status(phantom.APP_ERROR, 'DEPRECATED: Please use "get oncalls users" instead.')
+            return action_result.set_status(phantom.APP_ERROR, 'DEPRECATED: Please use "get oncall users" instead.')
 
         policies = resp_data.get('escalation_policies')
 
