@@ -46,6 +46,8 @@ class PagerDutyConnector(BaseConnector):
     ACTION_ID_LIST_SERVICES = "list_services"
     ACTION_ID_CREATE_INCIDENT = "create_incident"
     ACTION_ID_LIST_ESCALATIONS = "list_escalations"
+    ACTION_ID_GET_ONCALL_USER = "get_oncall_user"
+    ACTION_ID_GET_USER_INFO = "get_user_info"
 
     def __init__(self):
 
@@ -174,7 +176,7 @@ class PagerDutyConnector(BaseConnector):
         ret_val, resp_data = self._make_rest_call('/escalation_policies/on_call', action_result, params)
 
         if phantom.is_fail(ret_val):
-            return action_result.get_status()
+            return action_result.set_status(phantom.APP_ERROR, 'DEPRECATED: Please use "get oncall user" instead.')
 
         policies = resp_data.get('escalation_policies')
 
@@ -345,6 +347,60 @@ class PagerDutyConnector(BaseConnector):
 
         return action_result.set_status(phantom.APP_SUCCESS)
 
+    def _handle_get_oncall_user(self, param):
+
+        # Add an action result to the App Run
+        action_result = self.add_action_result(ActionResult(dict(param)))
+
+        # Setup params
+        params = {'escalation_policy_ids[]': param['escalation_id']}
+
+        # Find user IDs associated with escalation ID
+        ret_val, resp_data_oncalls = self._make_rest_call('/oncalls', action_result, params=params)
+
+        if phantom.is_fail(ret_val):
+            return action_result.get_status()
+
+        oncalls = resp_data_oncalls.get('oncalls')
+        action_result.update_summary({'num_users': len(oncalls)})
+
+        # Find additional info about each user
+        for user in oncalls:
+            try:
+                user_id = user['user']['id']
+            except KeyError as e:
+                return action_result.set_status(phantom.APP_ERROR, 'No user id in response', e)
+
+            ret_val, resp_data_user = self._make_rest_call('/users/{0}'.format(user_id), action_result, params={})
+
+            if phantom.is_fail(ret_val):
+                return action_result.get_status()
+
+            user['user'] = resp_data_user.get('user')
+            action_result.add_data(user)
+
+        return action_result.set_status(phantom.APP_SUCCESS)
+
+    def _handle_get_user_info(self, param):
+
+        # Add an action result to the App Run
+        action_result = self.add_action_result(ActionResult(dict(param)))
+
+        user_id = param.get('user_id')
+
+        ret_val, resp_data = self._make_rest_call('/users/{0}'.format(user_id), action_result, params={})
+
+        if phantom.is_fail(ret_val):
+            return action_result.get_status()
+
+        try:
+            action_result.add_data(resp_data['user'])
+            action_result.update_summary({'name': resp_data['user']['name']})
+        except KeyError as e:
+            return action_result.set_status(phantom.APP_ERROR, 'No user in response', e)
+
+        return action_result.set_status(phantom.APP_SUCCESS)
+
     def handle_action(self, param):
 
         ret_val = phantom.APP_SUCCESS
@@ -370,6 +426,10 @@ class PagerDutyConnector(BaseConnector):
             ret_val = self._handle_list_escalations(param)
         elif action_id == phantom.ACTION_ID_TEST_ASSET_CONNECTIVITY:
             ret_val = self._test_connectivity(param)
+        elif action_id == self.ACTION_ID_GET_ONCALL_USER:
+            ret_val = self._handle_get_oncall_user(param)
+        elif action_id == self.ACTION_ID_GET_USER_INFO:
+            ret_val = self._handle_get_user_info(param)
 
         return ret_val
 
