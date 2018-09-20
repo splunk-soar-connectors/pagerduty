@@ -5,7 +5,7 @@
     "publisher": "Phantom",
     "package_name": "phantom_pagerduty",
     "type": "ticketing",
-    "license": "Copyright (c) 2014-2018 Splunk Inc.",
+    "license": "Copyright (c) 2016-2018 Splunk Inc.",
     "main_module": "pagerduty_connector.pyc",
     "app_version": "1.0.20",
     "utctime_updated": "2018-09-10T20:43:37.000000Z",
