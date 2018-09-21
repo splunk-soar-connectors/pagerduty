@@ -1,14 +1,10 @@
 # --
 # File: pagerduty_view.py
 #
-# Copyright (c) Phantom Cyber Corporation, 2016-2018
+# Copyright (c) 2016-2018 Splunk Inc.
 #
-# This unpublished material is proprietary to Phantom Cyber.
-# All rights reserved. The methods and
-# techniques described herein are considered trade secrets
-# and/or confidential. Reproduction or distribution, in whole
-# or in part, is forbidden except by express written permission
-# of Phantom Cyber.
+# SPLUNK CONFIDENTIAL – Use or disclosure of this material in whole or in part
+# without a valid written license from Splunk Inc. is PROHIBITED.
 #
 # --
 
@@ -45,3 +41,31 @@ def display_oncall(provides, all_app_runs, context):
             results.append(ctx_result)
     # print context
     return 'display_oncall.html'
+
+
+def display_oncall_user(provides, all_app_runs, context):
+
+    context['results'] = results = []
+    for summary, action_results in all_app_runs:
+        for result in action_results:
+
+            ctx_result = get_ctx_result(result)
+            if (not ctx_result):
+                continue
+            results.append(ctx_result)
+    # print context
+    return 'display_oncall_user.html'
+
+
+def display_user_info(provides, all_app_runs, context):
+
+    context['results'] = results = []
+    for summary, action_results in all_app_runs:
+        for result in action_results:
+
+            ctx_result = get_ctx_result(result)
+            if (not ctx_result):
+                continue
+            results.append(ctx_result)
+    # print context
+    return 'display_user_info.html'

@@ -5,14 +5,14 @@
     "publisher": "Phantom",
     "package_name": "phantom_pagerduty",
     "type": "ticketing",
-    "license": "Copyright (c) Phantom Cyber Corporation, 2016-2018",
+    "license": "Copyright (c) 2016-2018 Splunk Inc.",
     "main_module": "pagerduty_connector.pyc",
-    "app_version": "1.0.19",
-    "utctime_updated": "2018-05-15T00:46:13.000000Z",
+    "app_version": "1.0.21",
+    "utctime_updated": "2018-09-20T22:26:29.000000Z",
     "product_vendor": "PagerDuty",
     "product_name": "PagerDuty",
     "product_version_regex": ".*",
-    "min_phantom_version": "3.5.180",
+    "min_phantom_version": "3.5.210",
     "logo": "logo_pagerduty.svg",
     "logo_dark": "logo_pagerduty_dark.svg",
     "configuration": {
@@ -174,7 +174,7 @@
         {
             "action": "get oncall",
             "description": "Get the current on call personnel (DEPRECATED)",
-            "verbose": "DEPRECATED: Please use <b>list oncalls</b> instead.",
+            "verbose": "DEPRECATED: Please use <b>get oncall user</b> instead.",
             "type": "generic",
             "identifier": "get_pd_oncall",
             "read_only": true,
@@ -1652,6 +1652,739 @@
                     "data_type": "numeric",
                     "example_values": [
                         1
+                    ]
+                }
+            ],
+            "versions": "EQ(*)"
+        },
+        {
+            "action": "get oncall user",
+            "description": "Get list of users for a specific escalation policy",
+            "verbose": "Finds the list of users associated with the <b>escalation_id</b>.",
+            "type": "investigate",
+            "identifier": "get_oncall_user",
+            "read_only": true,
+            "parameters": {
+                "escalation_id": {
+                    "description": "ID of escalation policy to use",
+                    "data_type": "string",
+                    "required": true,
+                    "primary": true,
+                    "contains": [
+                        "pagerduty escalation id"
+                    ],
+                    "order": 0
+                }
+            },
+            "render": {
+                "type": "custom",
+                "width": 10,
+                "height": 5,
+                "view": "pagerduty_view.display_oncall_user",
+                "title": "Get OnCall User"
+            },
+            "output": [
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "example_values": [
+                        "success"
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.escalation_id",
+                    "data_type": "string",
+                    "contains": [
+                        "pagerduty escalation id"
+                    ],
+                    "example_values": [
+                        "PU957QU",
+                        "PE0BI2T"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data",
+                    "data_type": "string",
+                    "example_values": []
+                },
+                {
+                    "data_path": "action_result.data.*.user.id",
+                    "data_type": "string",
+                    "example_values": [
+                        "PG4RNZ3",
+                        "P9GBXBY"
+                    ],
+                    "contains": [
+                        "pagerduty user id"
+                    ],
+                    "column_name": "User ID",
+                    "column_order": 0
+                },
+                {
+                    "data_path": "action_result.data.*.user.name",
+                    "data_type": "string",
+                    "example_values": [
+                        "Herman Edwards"
+                    ],
+                    "column_name": "Name",
+                    "column_order": 1
+                },
+                {
+                    "data_path": "action_result.data.*.user.email",
+                    "data_type": "string",
+                    "example_values": [
+                        "herman@phantom.us"
+                    ],
+                    "contains": [
+                        "email"
+                    ],
+                    "column_name": "Email",
+                    "column_order": 2
+                },
+                {
+                    "data_path": "action_result.summary.num_users",
+                    "data_type": "numeric",
+                    "example_values": [
+                        "3",
+                        2
+                    ]
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string",
+                    "example_values": [
+                        "Num users: 3",
+                        "Num users: 2"
+                    ]
+                },
+                {
+                    "data_path": "summary.total_objects",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                },
+                {
+                    "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.end",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.schedule",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.escalation_policy.self",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.pagerduty.com/escalation_policies/PE0BI2T"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.escalation_policy.summary",
+                    "data_type": "string",
+                    "example_values": [
+                        "IT Escalation Policy"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.escalation_policy.type",
+                    "data_type": "string",
+                    "example_values": [
+                        "escalation_policy_reference"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.escalation_policy.id",
+                    "data_type": "string",
+                    "example_values": [
+                        "PE0BI2T"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.escalation_policy.html_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://phantomlab.pagerduty.com/escalation_policies/PE0BI2T"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.start",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.user.job_title",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.user.description",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.user.color",
+                    "data_type": "string",
+                    "example_values": [
+                        "purple"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.self",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.pagerduty.com/users/P9GBXBY"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.teams.*.self",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.pagerduty.com/teams/P3Y9EUF"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.teams.*.summary",
+                    "data_type": "string",
+                    "example_values": [
+                        "IT"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.teams.*.type",
+                    "data_type": "string",
+                    "example_values": [
+                        "team_reference"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.teams.*.id",
+                    "data_type": "string",
+                    "example_values": [
+                        "P3Y9EUF"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.teams.*.html_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://phantomlab.pagerduty.com/teams/P3Y9EUF"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.html_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://phantomlab.pagerduty.com/users/P9GBXBY"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.summary",
+                    "data_type": "string",
+                    "example_values": [
+                        "Herman Edwards"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.contact_methods.*.self",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.pagerduty.com/users/P9GBXBY/contact_methods/POKA084"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.contact_methods.*.summary",
+                    "data_type": "string",
+                    "example_values": [
+                        "Default"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.contact_methods.*.type",
+                    "data_type": "string",
+                    "example_values": [
+                        "email_contact_method_reference"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.contact_methods.*.id",
+                    "data_type": "string",
+                    "example_values": [
+                        "POKA084"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.contact_methods.*.html_url",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.user.avatar_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://secure.gravatar.com/avatar/da0ebe3acdd83aa3d82d1dbd1a15a3e1.png?d=mm&r=PG"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.role",
+                    "data_type": "string",
+                    "example_values": [
+                        "owner"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.invitation_sent",
+                    "data_type": "boolean",
+                    "example_values": [
+                        true,
+                        false
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.time_zone",
+                    "data_type": "string",
+                    "example_values": [
+                        "America/Los_Angeles"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.billed",
+                    "data_type": "boolean",
+                    "example_values": [
+                        true,
+                        false
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.notification_rules.*.self",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.pagerduty.com/users/P9GBXBY/notification_rules/PQKX9UK"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.notification_rules.*.summary",
+                    "data_type": "string",
+                    "example_values": [
+                        "0 minutes: channel POKA084"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.notification_rules.*.type",
+                    "data_type": "string",
+                    "example_values": [
+                        "assignment_notification_rule_reference"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.notification_rules.*.id",
+                    "data_type": "string",
+                    "example_values": [
+                        "PQKX9UK"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user.notification_rules.*.html_url",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.user.type",
+                    "data_type": "string",
+                    "example_values": [
+                        "user"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.escalation_level",
+                    "data_type": "numeric",
+                    "example_values": [
+                        2
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.schedule.self",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.pagerduty.com/schedules/PZEALXW"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.schedule.summary",
+                    "data_type": "string",
+                    "example_values": [
+                        "New Schedule #1"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.schedule.type",
+                    "data_type": "string",
+                    "example_values": [
+                        "schedule_reference"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.schedule.id",
+                    "data_type": "string",
+                    "example_values": [
+                        "PZEALXW"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.schedule.html_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://phantomlab.pagerduty.com/schedules/PZEALXW"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                }
+            ],
+            "versions": "EQ(*)"
+        },
+        {
+            "action": "get user info",
+            "description": "Get information on a particular user",
+            "verbose": "Finds name, email, and all other information on a given <b>user_id</b>.",
+            "type": "investigate",
+            "identifier": "get_user_info",
+            "read_only": true,
+            "parameters": {
+                "user_id": {
+                    "description": "User ID to query",
+                    "data_type": "string",
+                    "required": true,
+                    "primary": true,
+                    "contains": [
+                        "pagerduty user id"
+                    ],
+                    "order": 0
+                }
+            },
+            "render": {
+                "type": "custom",
+                "width": 10,
+                "height": 5,
+                "view": "pagerduty_view.display_user_info",
+                "title": "Get User Info"
+            },
+            "output": [
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "example_values": [
+                        "success"
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.user_id",
+                    "data_type": "string",
+                    "contains": [
+                        "pagerduty user id"
+                    ],
+                    "example_values": [
+                        "P9GBXBY"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data",
+                    "data_type": "string",
+                    "example_values": []
+                },
+                {
+                    "data_path": "action_result.data.*.id",
+                    "data_type": "string",
+                    "example_values": [
+                        "PG4RNZ3",
+                        "P9GBXBY"
+                    ],
+                    "contains": [
+                        "pagerduty user id"
+                    ],
+                    "column_name": "User ID",
+                    "column_order": 0
+                },
+                {
+                    "data_path": "action_result.data.*.name",
+                    "data_type": "string",
+                    "example_values": [
+                        "Herman Edwards"
+                    ],
+                    "column_name": "Name",
+                    "column_order": 1
+                },
+                {
+                    "data_path": "action_result.data.*.email",
+                    "data_type": "string",
+                    "example_values": [
+                        "herman@phantom.us"
+                    ],
+                    "contains": [
+                        "email"
+                    ],
+                    "column_name": "Email",
+                    "column_order": 2
+                },
+                {
+                    "data_path": "action_result.summary.name",
+                    "data_type": "string",
+                    "example_values": [
+                        "Herman Edwards"
+                    ]
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string",
+                    "example_values": [
+                        "name: Herman Edwards",
+                        "Name: Herman Edwards"
+                    ]
+                },
+                {
+                    "data_path": "summary.total_objects",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                },
+                {
+                    "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.job_title",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.description",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.color",
+                    "data_type": "string",
+                    "example_values": [
+                        "purple"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.self",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.pagerduty.com/users/P9GBXBY"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.teams.*.self",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.pagerduty.com/teams/P3Y9EUF"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.teams.*.summary",
+                    "data_type": "string",
+                    "example_values": [
+                        "IT"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.teams.*.type",
+                    "data_type": "string",
+                    "example_values": [
+                        "team_reference"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.teams.*.id",
+                    "data_type": "string",
+                    "example_values": [
+                        "P3Y9EUF"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.teams.*.html_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://phantomlab.pagerduty.com/teams/P3Y9EUF"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.html_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://phantomlab.pagerduty.com/users/P9GBXBY"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.summary",
+                    "data_type": "string",
+                    "example_values": [
+                        "Herman Edwards"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.contact_methods.*.self",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.pagerduty.com/users/P9GBXBY/contact_methods/POKA084"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.contact_methods.*.summary",
+                    "data_type": "string",
+                    "example_values": [
+                        "Default"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.contact_methods.*.type",
+                    "data_type": "string",
+                    "example_values": [
+                        "email_contact_method_reference"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.contact_methods.*.id",
+                    "data_type": "string",
+                    "example_values": [
+                        "POKA084"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.contact_methods.*.html_url",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.avatar_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://secure.gravatar.com/avatar/da0ebe3acdd83aa3d82d1dbd1a15a3e1.png?d=mm&r=PG"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.role",
+                    "data_type": "string",
+                    "example_values": [
+                        "owner"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.invitation_sent",
+                    "data_type": "boolean",
+                    "example_values": [
+                        true,
+                        false
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.time_zone",
+                    "data_type": "string",
+                    "example_values": [
+                        "America/Los_Angeles"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.billed",
+                    "data_type": "boolean",
+                    "example_values": [
+                        true,
+                        false
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.notification_rules.*.self",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.pagerduty.com/users/P9GBXBY/notification_rules/PQKX9UK"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.notification_rules.*.summary",
+                    "data_type": "string",
+                    "example_values": [
+                        "0 minutes: channel POKA084"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.notification_rules.*.type",
+                    "data_type": "string",
+                    "example_values": [
+                        "assignment_notification_rule_reference"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.notification_rules.*.id",
+                    "data_type": "string",
+                    "example_values": [
+                        "PQKX9UK"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.notification_rules.*.html_url",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.type",
+                    "data_type": "string",
+                    "example_values": [
+                        "user"
                     ]
                 }
             ],
