@@ -60,9 +60,10 @@ class PagerDutyConnector(BaseConnector):
 
         self._headers = {
             'Authorization': 'Token token={0}'.format(api_key),
-            'Content-Type': 'application/json'}
+            'Content-Type': 'application/json',
+            'Accept': 'application/vnd.pagerduty+json;version=2'}
 
-        self._rest_url = "{0}{1}".format(config[PAGERDUTY_JSON_BASEURL].rstrip('/'), PAGERDUTY_API_URI)
+        self._rest_url = config[PAGERDUTY_JSON_BASEURL].rstrip('/')
 
         return phantom.APP_SUCCESS
 

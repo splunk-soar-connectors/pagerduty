@@ -10,7 +10,9 @@
 
 PAGERDUTY_JSON_BASEURL = "base_url"
 PAGERDUTY_API_KEY = "api_token"
-PAGERDUTY_API_URI = "/api/v1"
+
+# Deprecated as of v2
+# PAGERDUTY_API_URI = "/api/v1"
 
 
 PAGERDUTY_ERR_QUERY = "PagerDuty query failed"
