@@ -17,9 +17,10 @@
     "logo_dark": "logo_pagerduty_dark.svg",
     "configuration": {
         "base_url": {
-            "description": "PagerDuty base url e.g. https://mycompany.pagerduty.com",
+            "description": "PagerDuty base url e.g. https://api.pagerduty.com/",
             "data_type": "string",
             "required": true,
+            "default": "https://api.pagerduty.com/",
             "order": 0
         },
         "ph": {
@@ -167,110 +168,6 @@
                     "example_values": [
                         "team"
                     ]
-                }
-            ],
-            "versions": "EQ(*)"
-        },
-        {
-            "action": "get oncall",
-            "description": "Get the current on call personnel (DEPRECATED)",
-            "verbose": "DEPRECATED: Please use <b>get oncall user</b> instead.",
-            "type": "generic",
-            "identifier": "get_pd_oncall",
-            "read_only": true,
-            "deprecated": true,
-            "parameters": {
-                "team": {
-                    "description": "Team to get on call of",
-                    "data_type": "string",
-                    "contains": [
-                        "pagerduty team"
-                    ],
-                    "required": true,
-                    "primary": true
-                }
-            },
-            "render": {
-                "type": "custom",
-                "width": 10,
-                "height": 5,
-                "view": "pagerduty_view.display_oncall",
-                "title": "Get OnCall"
-            },
-            "output": [
-                {
-                    "data_path": "action_result.status",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.parameter.team",
-                    "data_type": "string",
-                    "contains": [
-                        "pagerduty team"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.id",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.data.*.name",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.data.*.on_call.*.end",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.data.*.on_call.*.level",
-                    "data_type": "numeric"
-                },
-                {
-                    "data_path": "action_result.data.*.on_call.*.start",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.data.*.on_call.*.user.color",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.data.*.on_call.*.user.email",
-                    "data_type": "string",
-                    "contains": [
-                        "email"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.on_call.*.user.id",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.data.*.on_call.*.user.name",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.data.*.on_call.*.user.role",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.data.*.on_call.*.user.time_zone",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.summary.total_policies",
-                    "data_type": "numeric"
-                },
-                {
-                    "data_path": "action_result.message",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "summary.total_objects",
-                    "data_type": "numeric"
-                },
-                {
-                    "data_path": "summary.total_objects_successful",
-                    "data_type": "numeric"
                 }
             ],
             "versions": "EQ(*)"
@@ -532,34 +429,6 @@
                     ],
                     "column_name": "ID",
                     "column_order": 0
-                },
-                {
-                    "data_path": "action_result.data.*.incident_counts.acknowledged",
-                    "data_type": "numeric",
-                    "example_values": [
-                        0
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.incident_counts.resolved",
-                    "data_type": "numeric",
-                    "example_values": [
-                        1
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.incident_counts.total",
-                    "data_type": "numeric",
-                    "example_values": [
-                        1
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.incident_counts.triggered",
-                    "data_type": "numeric",
-                    "example_values": [
-                        0
-                    ]
                 },
                 {
                     "data_path": "action_result.data.*.incident_urgency_rule.type",
