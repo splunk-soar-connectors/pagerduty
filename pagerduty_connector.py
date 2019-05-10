@@ -1,9 +1,7 @@
-# --
 # File: pagerduty_connector.py
+# Copyright (c) 2016-2019 Splunk Inc.
 #
-# Copyright (c) 2016-2018 Splunk Inc.
-#
-# SPLUNK CONFIDENTIAL – Use or disclosure of this material in whole or in part
+# SPLUNK CONFIDENTIAL - Use or disclosure of this material in whole or in part
 # without a valid written license from Splunk Inc. is PROHIBITED.
 #
 # --
@@ -56,6 +54,7 @@ class PagerDutyConnector(BaseConnector):
 
         config = self.get_config()
 
+        self._rest_url = config[PAGERDUTY_JSON_BASEURL].rstrip('/').encode('utf-8')
         api_key = config[PAGERDUTY_API_KEY]
 
         self._headers = {
@@ -63,22 +62,23 @@ class PagerDutyConnector(BaseConnector):
             'Content-Type': 'application/json',
             'Accept': 'application/vnd.pagerduty+json;version=2'}
 
-        self._rest_url = config[PAGERDUTY_JSON_BASEURL].rstrip('/')
-
         return phantom.APP_SUCCESS
 
     def _normalize_text(self, text):
-        return text.replace('}', '}}').replace('{', '{{')
+        if text:
+            return text.replace('}', '}}').replace('{', '{{')
+        else:
+            return "Response data is None"
 
     def _parse_response(self, result, r):
 
         content_type = r.headers.get('content-type')
-
         resp_type = content_type
 
         status_code = r.status_code
 
         resp_data = None
+        error = None
 
         # It's ok if r.text is None, dump that, if the result object supports recording it
         if hasattr(result, 'add_debug_data'):
@@ -92,7 +92,9 @@ class PagerDutyConnector(BaseConnector):
             except:
                 result.set_status(phantom.APP_ERROR, "Unable to parse response as a JSON status_code: {0}, data: {1}".format(r.status_code, self._normalize_text(r.text)))
 
-            error = resp_data.get('error')
+            if resp_data:
+                error = resp_data.get('error')
+
             if error:
 
                 if error.get('code', -1) == 2016:
@@ -108,16 +110,16 @@ class PagerDutyConnector(BaseConnector):
         elif 'html' in content_type:
             try:
                 soup = BeautifulSoup(r.text, "html.parser")
-                resp_data = soup.text
+                resp_data = soup.text.encode('utf-8')
             except Exception as e:
                 self.debug_print("Handled exception", e)
                 result.set_status(phantom.APP_ERROR, "Unable to parse response as a HTML status_code: {0}, data: {1}".format(r.status_code, self._normalize_text(r.text)))
         else:
-            resp_data = r.text
+            resp_data = r.text.encode('utf-8')
 
         if not (200 <= r.status_code < 300):
             return RetVal4(result.set_status(phantom.APP_ERROR, "Call returned error, status_code: {0}, data: {1}"
-                    .format(r.status_code, self._normalize_text(r.text))), None, None, None)
+                    .format(r.status_code, self._normalize_text(resp_data))), None, None, None)
 
         return RetVal4(phantom.APP_SUCCESS, status_code, resp_type, resp_data)
 
@@ -154,9 +156,10 @@ class PagerDutyConnector(BaseConnector):
     def _test_connectivity(self, param):
 
         self.save_progress('Querying a single incident, to verify API key')
+        action_result = self.add_action_result(ActionResult(dict(param)))
 
         params = { "limit": 1 }
-        ret_val, resp_data = self._make_rest_call('/incidents', self, params)
+        ret_val, resp_data = self._make_rest_call('/incidents', action_result, params)
 
         if phantom.is_fail(ret_val):
             self.append_to_message('Test connectivity failed')
