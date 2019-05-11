@@ -911,7 +911,11 @@
                 }
             },
             "render": {
-                "type": "table"
+                "type": "custom",
+                "width": 10,
+                "height": 5,
+                "view": "pagerduty_view.display_escalations",
+                "title": "List Escalations"
             },
             "output": [
                 {
