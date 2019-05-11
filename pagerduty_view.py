@@ -29,20 +29,6 @@ def get_ctx_result(result):
     return ctx_result
 
 
-def display_oncall(provides, all_app_runs, context):
-
-    context['results'] = results = []
-    for summary, action_results in all_app_runs:
-        for result in action_results:
-
-            ctx_result = get_ctx_result(result)
-            if (not ctx_result):
-                continue
-            results.append(ctx_result)
-    # print context
-    return 'display_oncall.html'
-
-
 def display_oncall_user(provides, all_app_runs, context):
 
     context['results'] = results = []
