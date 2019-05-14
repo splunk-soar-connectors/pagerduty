@@ -1393,7 +1393,8 @@
                 "email": {
                     "description": "Email of user creating incident",
                     "data_type": "string",
-                    "required": false,
+                    "required": true,
+                    "primary": true,
                     "contains": [
                         "email"
                     ],

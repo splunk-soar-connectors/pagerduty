@@ -19,3 +19,4 @@ PAGERDUTY_ERR_QUERY_RETURNED_NO_DATA = "PagerDuty query did not return any infor
 PAGERDUTY_ERR_SERVER_CONNECTION = "Connection to server failed"
 PAGERDUTY_ERR_CONNECTIVITY_TEST = "Test Connectivity Failed"
 PAGERDUTY_SUCC_CONNECTIVITY_TEST = "Test Connectivity Passed"
+PAGERDUTY_DEFAULT_LIMIT = 25

@@ -166,22 +166,53 @@ class PagerDutyConnector(BaseConnector):
 
         return self.set_status_save_progress(phantom.APP_SUCCESS, "Test connectivity passed")
 
+    def _paginator(self, endpoint, action_result):
+
+        dic_map = {
+            self.ACTION_ID_LIST_USERS: 'users',
+            self.ACTION_ID_LIST_TEAMS: 'teams',
+            self.ACTION_ID_LIST_ONCALLS: 'oncalls',
+            self.ACTION_ID_LIST_SERVICES: 'services',
+            self.ACTION_ID_LIST_ESCALATIONS: 'escalation_policies'
+        }
+        result_list = list()
+        offset = 0
+
+        set_name = dic_map.get(self.get_action_identifier())
+
+        while True:
+            endpoint = '{}{}{}'.format(endpoint, '&offset=', offset)
+            ret_val, resp_json = self._make_rest_call(endpoint, action_result)
+
+            if phantom.is_fail(ret_val):
+                return action_result.set_status(phantom.APP_ERROR, "Error while getting the {}".format(set_name))
+
+            if resp_json.get(set_name):
+                result_list.extend(resp_json[set_name])
+            elif len(result_list) == 0:
+                return action_result.set_status(phantom.APP_ERROR, 'No data found')
+
+            if not resp_json.get('more'):
+                break
+            else:
+                offset = offset + PAGERDUTY_DEFAULT_LIMIT
+
+        return result_list
+
     def _handle_list_oncalls(self, param):
 
         # Add an action result to the App Run
         action_result = self.add_action_result(ActionResult(dict(param)))
 
-        ret_val, resp_data = self._make_rest_call('/oncalls', action_result)
+        result_list = self._paginator('/oncalls?', action_result)
 
-        if phantom.is_fail(ret_val):
+        if phantom.is_fail(result_list):
             return action_result.get_status()
 
-        oncalls = resp_data.get('oncalls')
-
-        for oncall in oncalls:
+        for oncall in result_list:
             action_result.add_data(oncall)
 
-        action_result.update_summary({'num_oncalls': len(oncalls)})
+        action_result.update_summary({'num_oncalls': len(result_list)})
 
         return action_result.set_status(phantom.APP_SUCCESS)
 
@@ -190,20 +221,15 @@ class PagerDutyConnector(BaseConnector):
         # Add an action result to the App Run
         action_result = self.add_action_result(ActionResult(dict(param)))
 
-        ret_val, resp_data = self._make_rest_call('/teams', action_result)
+        result_list = self._paginator('/teams?', action_result)
 
-        if phantom.is_fail(ret_val):
+        if phantom.is_fail(result_list):
             return action_result.get_status()
 
-        teams = resp_data.get('teams')
-
-        if not teams:
-            return action_result.set_status(phantom.APP_ERROR, 'No teams configured')
-
-        for team in teams:
+        for team in result_list:
             action_result.add_data(team)
 
-        action_result.update_summary({'total_teams': len(teams)})
+        action_result.update_summary({'total_teams': len(result_list)})
 
         return action_result.set_status(phantom.APP_SUCCESS)
 
@@ -212,22 +238,28 @@ class PagerDutyConnector(BaseConnector):
         # Add an action result to the App Run
         action_result = self.add_action_result(ActionResult(dict(param)))
 
-        params = {}
+        str_endpoint = ''
+        if param.get('team_ids'):
+            list_teams_id = [x.strip() for x in param.get('team_ids').split(',')]
+            list_teams_id = ' '.join(list_teams_id).split()
+            if list_teams_id:
+                for team_id in list_teams_id:
+                    str_endpoint = '{}{}{}{}'.format(str_endpoint, 'team_ids[]=', team_id, '&')
+                str_endpoint = str_endpoint[:-1]
+            else:
+                return action_result.set_status(phantom.APP_ERROR, 'Please provide valid team_ids')
 
-        if 'team_ids' in param:
-            params['team_ids[]'] = param['team_ids']
+        endpoint = '/services?{}'.format(str_endpoint)
 
-        ret_val, resp_data = self._make_rest_call('/services', action_result, params=params)
+        result_list = self._paginator(endpoint, action_result)
 
-        if phantom.is_fail(ret_val):
+        if phantom.is_fail(result_list):
             return action_result.get_status()
 
-        services = resp_data.get('services', [])
-
-        for service in services:
+        for service in result_list:
             action_result.add_data(service)
 
-        action_result.update_summary({'num_services': len(services)})
+        action_result.update_summary({'num_services': len(result_list)})
 
         return action_result.set_status(phantom.APP_SUCCESS)
 
@@ -236,22 +268,28 @@ class PagerDutyConnector(BaseConnector):
         # Add an action result to the App Run
         action_result = self.add_action_result(ActionResult(dict(param)))
 
-        params = {}
-
+        str_endpoint = ''
         if 'team_ids' in param:
-            params['team_ids[]'] = param['team_ids']
+            list_teams_id = [x.strip() for x in param.get('team_ids').split(',')]
+            list_teams_id = ' '.join(list_teams_id).split()
+            if list_teams_id:
+                for team_id in list_teams_id:
+                    str_endpoint = '{}{}{}{}'.format(str_endpoint, 'team_ids[]=', team_id, '&')
+                str_endpoint = str_endpoint[:-1]
+            else:
+                return action_result.set_status(phantom.APP_ERROR, 'Please provide valid team_ids')
 
-        ret_val, resp_data = self._make_rest_call('/users', action_result, params=params)
+        endpoint = '/users?{}'.format(str_endpoint)
 
-        if phantom.is_fail(ret_val):
+        result_list = self._paginator(endpoint, action_result)
+
+        if phantom.is_fail(result_list):
             return action_result.get_status()
 
-        users = resp_data.get('users', [])
-
-        for user in users:
+        for user in result_list:
             action_result.add_data(user)
 
-        action_result.update_summary({'num_users': len(users)})
+        action_result.update_summary({'num_users': len(result_list)})
 
         return action_result.set_status(phantom.APP_SUCCESS)
 
@@ -260,24 +298,31 @@ class PagerDutyConnector(BaseConnector):
         # Add an action result to the App Run
         action_result = self.add_action_result(ActionResult(dict(param)))
 
-        params = {}
+        str_endpoint = ''
+        if param.get('team_ids'):
+            list_teams_id = [x.strip() for x in param.get('team_ids').split(',')]
+            list_teams_id = ' '.join(list_teams_id).split()
+            if list_teams_id:
+                for team_id in list_teams_id:
+                    str_endpoint = '{}{}{}{}'.format(str_endpoint, 'team_ids[]=', team_id, '&')
+                str_endpoint = str_endpoint[:-1]
+            else:
+                return action_result.set_status(phantom.APP_ERROR, 'Please provide valid team_ids')
 
-        if 'user_ids' in param:
-            params['user_ids[]'] = param['user_ids']
-        if 'team_ids' in param:
-            params['team_ids[]'] = param['team_ids']
+        if param.get('user_ids'):
+            str_endpoint = '{}{}{}'.format(str_endpoint, '&', param.get('user_ids'))
 
-        ret_val, resp_data = self._make_rest_call('/escalation_policies', action_result, params=params)
+        endpoint = '/escalation_policies?{}'.format(str_endpoint)
 
-        if phantom.is_fail(ret_val):
-            return action_result.get_status()
+        result_list = self._paginator(endpoint, action_result)
 
-        esc_pols = resp_data.get('escalation_policies', [])
+        if result_list is None:
+            return action_result.set_status(phantom.APP_ERROR, "Error while connecting")
 
-        for esc_pol in esc_pols:
+        for esc_pol in result_list:
             action_result.add_data(esc_pol)
 
-        action_result.update_summary({'num_policies': len(esc_pols)})
+        action_result.update_summary({'num_policies': len(result_list)})
 
         return action_result.set_status(phantom.APP_SUCCESS)
 
@@ -302,9 +347,9 @@ class PagerDutyConnector(BaseConnector):
                }
 
         if 'escalation_id' in param:
-            body["escalation_policy"] = {"id": param["escalation_id"], "type": "escalation_policy"}
-        elif 'assignee_id' in param:
-            body["assignments"] = [{"assignee": {"id": "assignee_id", "type": "user"}}]
+            body["incident"]["escalation_policy"] = {"id": param["escalation_id"], "type": "escalation_policy"}
+        if 'assignee_id' in param:
+            body["incident"]["assignments"] = [{"assignee": {"id": param["assignee_id"], "type": "user"}}]
 
         headers = {}
         if 'email' in param:
