@@ -68,8 +68,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.description",
-                    "data_type": "string",
-                    "example_values": []
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.id",
@@ -192,8 +191,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.end",
-                    "data_type": "string",
-                    "example_values": []
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.escalation_level",
@@ -254,13 +252,11 @@
                 },
                 {
                     "data_path": "action_result.data.*.schedule",
-                    "data_type": "string",
-                    "example_values": []
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.start",
-                    "data_type": "string",
-                    "example_values": []
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.user.html_url",
@@ -517,8 +513,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.scheduled_actions",
-                    "data_type": "string",
-                    "example_values": []
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.service_key",
@@ -546,8 +541,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.support_hours",
-                    "data_type": "string",
-                    "example_values": []
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.type",
@@ -870,8 +864,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.job_title",
-                    "data_type": "string",
-                    "example_values": []
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.marketing_opt_out",
@@ -1159,8 +1152,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.description",
-                    "data_type": "string",
-                    "example_values": []
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.escalation_rules.*.escalation_delay_in_minutes",
@@ -1285,8 +1277,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.services",
-                    "data_type": "string",
-                    "example_values": []
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.services.*.acknowledgement_timeout",
@@ -1706,8 +1697,7 @@
                 },
                 {
                     "data_path": "action_result.data",
-                    "data_type": "string",
-                    "example_values": []
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.summary.incident_key",
@@ -2256,8 +2246,7 @@
                 },
                 {
                     "data_path": "action_result.data",
-                    "data_type": "string",
-                    "example_values": []
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.user.id",
@@ -2672,8 +2661,7 @@
                 },
                 {
                     "data_path": "action_result.data",
-                    "data_type": "string",
-                    "example_values": []
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.id",
