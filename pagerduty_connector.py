@@ -360,6 +360,8 @@ class PagerDutyConnector(BaseConnector):
         if phantom.is_fail(ret_val):
             return action_result.get_status()
 
+        action_result.add_data(resp_data)
+
         action_result.update_summary({'incident_key': resp_data.get('incident', {}).get('incident_key', "Unknown")})
 
         return action_result.set_status(phantom.APP_SUCCESS)

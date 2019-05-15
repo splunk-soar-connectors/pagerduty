@@ -192,7 +192,8 @@
                 },
                 {
                     "data_path": "action_result.data.*.end",
-                    "data_type": "string"
+                    "data_type": "string",
+                    "example_values": []
                 },
                 {
                     "data_path": "action_result.data.*.escalation_level",
@@ -205,7 +206,8 @@
                     "data_path": "action_result.data.*.escalation_policy.html_url",
                     "data_type": "string",
                     "example_values": [
-                        "https://splunk-phantom.pagerduty.com/escalation_policies/P1TFOW9"
+                        "https://splunk-phantom.pagerduty.com/escalation_policies/P1TFOW9",
+                        "https://phantomlab.pagerduty.com/escalation_policies/PEEMY9J"
                     ],
                     "contains": [
                         "url"
@@ -215,7 +217,8 @@
                     "data_path": "action_result.data.*.escalation_policy.id",
                     "data_type": "string",
                     "example_values": [
-                        "P1TFOW9"
+                        "P1TFOW9",
+                        "PEEMY9J"
                     ],
                     "contains": [
                         "pagerduty escalation id"
@@ -227,7 +230,8 @@
                     "data_path": "action_result.data.*.escalation_policy.self",
                     "data_type": "string",
                     "example_values": [
-                        "https://api.pagerduty.com/escalation_policies/P1TFOW9"
+                        "https://api.pagerduty.com/escalation_policies/P1TFOW9",
+                        "https://api.pagerduty.com/escalation_policies/PEEMY9J"
                     ],
                     "contains": [
                         "url"
@@ -251,17 +255,20 @@
                 },
                 {
                     "data_path": "action_result.data.*.schedule",
-                    "data_type": "string"
+                    "data_type": "string",
+                    "example_values": []
                 },
                 {
                     "data_path": "action_result.data.*.start",
-                    "data_type": "string"
+                    "data_type": "string",
+                    "example_values": []
                 },
                 {
                     "data_path": "action_result.data.*.user.html_url",
                     "data_type": "string",
                     "example_values": [
-                        "https://splunk-phantom.pagerduty.com/users/PG4RNZ3"
+                        "https://splunk-phantom.pagerduty.com/users/PG4RNZ3",
+                        "https://phantomlab.pagerduty.com/users/P9GBXBY"
                     ],
                     "contains": [
                         "url"
@@ -271,7 +278,8 @@
                     "data_path": "action_result.data.*.user.id",
                     "data_type": "string",
                     "example_values": [
-                        "PG4RNZ3"
+                        "PG4RNZ3",
+                        "P9GBXBY"
                     ],
                     "contains": [
                         "pagerduty user id"
@@ -283,7 +291,8 @@
                     "data_path": "action_result.data.*.user.self",
                     "data_type": "string",
                     "example_values": [
-                        "https://api.pagerduty.com/users/PG4RNZ3"
+                        "https://api.pagerduty.com/users/PG4RNZ3",
+                        "https://api.pagerduty.com/users/P9GBXBY"
                     ],
                     "contains": [
                         "url"
@@ -293,7 +302,8 @@
                     "data_path": "action_result.data.*.user.summary",
                     "data_type": "string",
                     "example_values": [
-                        "Matt Tichenor"
+                        "Matt Tichenor",
+                        "Herman Edwards"
                     ],
                     "column_name": "User Name",
                     "column_order": 3
@@ -309,14 +319,16 @@
                     "data_path": "action_result.summary.num_oncalls",
                     "data_type": "numeric",
                     "example_values": [
-                        3
+                        3,
+                        29
                     ]
                 },
                 {
                     "data_path": "action_result.message",
                     "data_type": "string",
                     "example_values": [
-                        "Num oncalls: 3"
+                        "Num oncalls: 3",
+                        "Num oncalls: 29"
                     ]
                 },
                 {
@@ -331,6 +343,47 @@
                     "data_type": "numeric",
                     "example_values": [
                         1
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.schedule.self",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.pagerduty.com/schedules/PZEALXW"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.schedule.summary",
+                    "data_type": "string",
+                    "example_values": [
+                        "New Schedule #1"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.schedule.type",
+                    "data_type": "string",
+                    "example_values": [
+                        "schedule_reference"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.schedule.id",
+                    "data_type": "string",
+                    "example_values": [
+                        "PZEALXW"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.schedule.html_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://phantomlab.pagerduty.com/schedules/PZEALXW"
+                    ],
+                    "contains": [
+                        "url"
                     ]
                 }
             ],
@@ -355,7 +408,11 @@
                 }
             },
             "render": {
-                "type": "table"
+                "type": "custom",
+                "width": 10,
+                "height": 5,
+                "view": "pagerduty_view.display_services",
+                "title": "List Services"
             },
             "output": [
                 {
@@ -427,7 +484,7 @@
                     "contains": [
                         "pagerduty service id"
                     ],
-                    "column_name": "ID",
+                    "column_name": "Service ID",
                     "column_order": 0
                 },
                 {
@@ -458,7 +515,7 @@
                     "example_values": [
                         "API Service"
                     ],
-                    "column_name": "Name",
+                    "column_name": "Service Name",
                     "column_order": 1
                 },
                 {
@@ -731,7 +788,11 @@
                 }
             },
             "render": {
-                "type": "table"
+                "type": "custom",
+                "width": 10,
+                "height": 5,
+                "view": "pagerduty_view.display_users",
+                "title": "List Users"
             },
             "output": [
                 {
@@ -755,7 +816,8 @@
                     "data_path": "action_result.data.*.avatar_url",
                     "data_type": "string",
                     "example_values": [
-                        "https://secure.gravatar.com/avatar/22469b872bd7db8e40871307f3c5ac49.png?d=mm&r=PG"
+                        "https://secure.gravatar.com/avatar/22469b872bd7db8e40871307f3c5ac49.png?d=mm&r=PG",
+                        "https://secure.gravatar.com/avatar/9f9f5801847987527cea4d2f794f5026.png?d=mm&r=PG"
                     ],
                     "contains": [
                         "url"
@@ -780,7 +842,8 @@
                     "data_path": "action_result.data.*.email",
                     "data_type": "string",
                     "example_values": [
-                        "Herman@phantom.us"
+                        "Herman@phantom.us",
+                        "hvaghela@splunk.com"
                     ],
                     "contains": [
                         "email"
@@ -792,7 +855,8 @@
                     "data_path": "action_result.data.*.id",
                     "data_type": "string",
                     "example_values": [
-                        "PDQZBR8"
+                        "PDQZBR8",
+                        "PY7HDXJ"
                     ],
                     "contains": [
                         "pagerduty user id"
@@ -810,7 +874,8 @@
                 },
                 {
                     "data_path": "action_result.data.*.job_title",
-                    "data_type": "string"
+                    "data_type": "string",
+                    "example_values": []
                 },
                 {
                     "data_path": "action_result.data.*.marketing_opt_out",
@@ -824,7 +889,8 @@
                     "data_path": "action_result.data.*.name",
                     "data_type": "string",
                     "example_values": [
-                        "Herman Edwards"
+                        "Herman Edwards",
+                        "Heena"
                     ],
                     "column_name": "Name",
                     "column_order": 1
@@ -833,14 +899,16 @@
                     "data_path": "action_result.data.*.role",
                     "data_type": "string",
                     "example_values": [
-                        "admin"
+                        "admin",
+                        "observer"
                     ]
                 },
                 {
                     "data_path": "action_result.data.*.time_zone",
                     "data_type": "string",
                     "example_values": [
-                        "Central Time (US & Canada)"
+                        "Central Time (US & Canada)",
+                        "America/Los_Angeles"
                     ]
                 },
                 {
@@ -876,6 +944,155 @@
                     "data_type": "numeric",
                     "example_values": [
                         1
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.description",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.self",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.pagerduty.com/users/PY7HDXJ"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.teams.*.self",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.pagerduty.com/teams/P3Y9EUF"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.teams.*.summary",
+                    "data_type": "string",
+                    "example_values": [
+                        "IT"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.teams.*.type",
+                    "data_type": "string",
+                    "example_values": [
+                        "team_reference"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.teams.*.id",
+                    "data_type": "string",
+                    "example_values": [
+                        "P3Y9EUF"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.teams.*.html_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://phantomlab.pagerduty.com/teams/P3Y9EUF"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.html_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://phantomlab.pagerduty.com/users/PY7HDXJ"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.summary",
+                    "data_type": "string",
+                    "example_values": [
+                        "Heena"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.contact_methods.*.self",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.pagerduty.com/users/PY7HDXJ/contact_methods/PKEUSEE"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.contact_methods.*.summary",
+                    "data_type": "string",
+                    "example_values": [
+                        "Default"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.contact_methods.*.type",
+                    "data_type": "string",
+                    "example_values": [
+                        "email_contact_method_reference"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.contact_methods.*.id",
+                    "data_type": "string",
+                    "example_values": [
+                        "PKEUSEE"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.contact_methods.*.html_url",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.notification_rules.*.self",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.pagerduty.com/users/PY7HDXJ/notification_rules/PXK872K"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.notification_rules.*.summary",
+                    "data_type": "string",
+                    "example_values": [
+                        "0 minutes: channel PKEUSEE"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.notification_rules.*.type",
+                    "data_type": "string",
+                    "example_values": [
+                        "assignment_notification_rule_reference"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.notification_rules.*.id",
+                    "data_type": "string",
+                    "example_values": [
+                        "PXK872K"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.notification_rules.*.html_url",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.type",
+                    "data_type": "string",
+                    "example_values": [
+                        "user"
                     ]
                 }
             ],
@@ -1448,7 +1665,8 @@
                     "data_path": "action_result.parameter.description",
                     "data_type": "string",
                     "example_values": [
-                        "Fix it"
+                        "Fix it",
+                        "test description"
                     ]
                 },
                 {
@@ -1468,14 +1686,16 @@
                         "pagerduty service id"
                     ],
                     "example_values": [
-                        "PXVZTZ7"
+                        "PXVZTZ7",
+                        "PZ020AS"
                     ]
                 },
                 {
                     "data_path": "action_result.parameter.title",
                     "data_type": "string",
                     "example_values": [
-                        "It is broken"
+                        "It is broken",
+                        "test creation 12"
                     ]
                 },
                 {
@@ -1484,8 +1704,11 @@
                     "contains": [
                         "email"
                     ],
+                    "column_name": "Email",
+                    "column_order": 5,
                     "example_values": [
-                        "herman@phantom.us"
+                        "herman@phantom.us",
+                        "hvaghela@splunk.com"
                     ]
                 },
                 {
@@ -1498,7 +1721,8 @@
                     "data_type": "string",
                     "example_values": [
                         "86f03691406c4f5299ca1b06509b57ca",
-                        "22c20aeb7819414fb91db31493c7f16e"
+                        "22c20aeb7819414fb91db31493c7f16e",
+                        "cec632fb2c1d4b1a970e7063578d711e"
                     ],
                     "contains": [
                         "md5"
@@ -1511,7 +1735,8 @@
                     "data_type": "string",
                     "example_values": [
                         "Incident key: 86f03691406c4f5299ca1b06509b57ca",
-                        "Incident key: 22c20aeb7819414fb91db31493c7f16e"
+                        "Incident key: 22c20aeb7819414fb91db31493c7f16e",
+                        "Incident key: cec632fb2c1d4b1a970e7063578d711e"
                     ]
                 },
                 {
@@ -1526,6 +1751,470 @@
                     "data_type": "numeric",
                     "example_values": [
                         1
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.incident.body.details",
+                    "data_type": "string",
+                    "example_values": [
+                        "test description"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.incident.assignments.*.assignee.self",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.pagerduty.com/users/PVM46FA"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.incident.assignments.*.assignee.summary",
+                    "data_type": "string",
+                    "example_values": [
+                        "Ryan Russell"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.incident.assignments.*.assignee.type",
+                    "data_type": "string",
+                    "example_values": [
+                        "user_reference"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.incident.assignments.*.assignee.id",
+                    "data_type": "string",
+                    "column_name": "Assignee ID",
+                    "column_order": 2,
+                    "example_values": [
+                        "PVM46FA"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.incident.assignments.*.assignee.html_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://phantomlab.pagerduty.com/users/PVM46FA"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.incident.assignments.*.at",
+                    "data_type": "string",
+                    "example_values": [
+                        "2019-05-15T09:22:16Z"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.incident.basic_alert_grouping",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.incident.summary",
+                    "data_type": "string",
+                    "example_values": [
+                        "[#56] test creation 12"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.incident.alert_grouping",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.incident.id",
+                    "data_type": "string",
+                    "example_values": [
+                        "PTX014C"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.incident.service.self",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.pagerduty.com/services/PZ020AS"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.incident.service.summary",
+                    "data_type": "string",
+                    "example_values": [
+                        "test-service"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.incident.service.type",
+                    "data_type": "string",
+                    "example_values": [
+                        "service_reference"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.incident.service.id",
+                    "data_type": "string",
+                    "column_name": "Service ID",
+                    "column_order": 3,
+                    "contains": [
+                        "pagerduty service id"
+                    ],
+                    "example_values": [
+                        "PZ020AS"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.incident.service.html_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://phantomlab.pagerduty.com/services/PZ020AS"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.incident.title",
+                    "data_type": "string",
+                    "example_values": [
+                        "test creation 12"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.incident.escalation_policy.self",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.pagerduty.com/escalation_policies/PE0BI2T"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.incident.escalation_policy.summary",
+                    "data_type": "string",
+                    "example_values": [
+                        "IT Escalation Policy"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.incident.escalation_policy.type",
+                    "data_type": "string",
+                    "example_values": [
+                        "escalation_policy_reference"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.incident.escalation_policy.id",
+                    "data_type": "string",
+                    "column_name": "Escalation ID",
+                    "contains": [
+                        "pagerduty escalation id"
+                    ],
+                    "column_order": 4,
+                    "example_values": [
+                        "PE0BI2T"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.incident.escalation_policy.html_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://phantomlab.pagerduty.com/escalation_policies/PE0BI2T"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.incident.self",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.pagerduty.com/incidents/PTX014C"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.incident.pending_actions.*.type",
+                    "data_type": "string",
+                    "example_values": [
+                        "escalate"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.incident.pending_actions.*.at",
+                    "data_type": "string",
+                    "example_values": [
+                        "2019-05-15T09:52:16Z"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.incident.last_status_change_at",
+                    "data_type": "string",
+                    "example_values": [
+                        "2019-05-15T09:22:16Z"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.incident.first_trigger_log_entry.self",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.pagerduty.com/log_entries/ROGYV75UOIN0725VJLHVWVL9L2"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.incident.first_trigger_log_entry.summary",
+                    "data_type": "string",
+                    "example_values": [
+                        "Triggered through the website"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.incident.first_trigger_log_entry.type",
+                    "data_type": "string",
+                    "example_values": [
+                        "trigger_log_entry_reference"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.incident.first_trigger_log_entry.id",
+                    "data_type": "string",
+                    "example_values": [
+                        "ROGYV75UOIN0725VJLHVWVL9L2"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.incident.first_trigger_log_entry.html_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://phantomlab.pagerduty.com/incidents/PTX014C/log_entries/ROGYV75UOIN0725VJLHVWVL9L2"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.incident.type",
+                    "data_type": "string",
+                    "example_values": [
+                        "incident"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.incident.status",
+                    "data_type": "string",
+                    "example_values": [
+                        "triggered"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.incident.description",
+                    "data_type": "string",
+                    "example_values": [
+                        "test creation 12"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.incident.html_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://phantomlab.pagerduty.com/incidents/PTX014C"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.incident.created_at",
+                    "data_type": "string",
+                    "example_values": [
+                        "2019-05-15T09:22:16Z"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.incident.alert_counts.resolved",
+                    "data_type": "numeric",
+                    "example_values": [
+                        0
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.incident.alert_counts.all",
+                    "data_type": "numeric",
+                    "example_values": [
+                        0
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.incident.alert_counts.triggered",
+                    "data_type": "numeric",
+                    "example_values": [
+                        0
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.incident.teams.*.self",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.pagerduty.com/teams/P3Y9EUF"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.incident.teams.*.summary",
+                    "data_type": "string",
+                    "example_values": [
+                        "IT"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.incident.teams.*.type",
+                    "data_type": "string",
+                    "example_values": [
+                        "team_reference"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.incident.teams.*.id",
+                    "data_type": "string",
+                    "example_values": [
+                        "P3Y9EUF"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.incident.teams.*.html_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://phantomlab.pagerduty.com/teams/P3Y9EUF"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.incident.last_status_change_by.self",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.pagerduty.com/services/PZ020AS"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.incident.last_status_change_by.summary",
+                    "data_type": "string",
+                    "example_values": [
+                        "test-service"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.incident.last_status_change_by.type",
+                    "data_type": "string",
+                    "example_values": [
+                        "service_reference"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.incident.last_status_change_by.id",
+                    "data_type": "string",
+                    "example_values": [
+                        "PZ020AS"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.incident.last_status_change_by.html_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://phantomlab.pagerduty.com/services/PZ020AS"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.incident.incident_key",
+                    "data_type": "string",
+                    "example_values": [
+                        "cec632fb2c1d4b1a970e7063578d711e"
+                    ],
+                    "contains": [
+                        "md5"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.incident.impacted_services.*.self",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://api.pagerduty.com/services/PZ020AS"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.incident.impacted_services.*.summary",
+                    "data_type": "string",
+                    "example_values": [
+                        "test-service"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.incident.impacted_services.*.type",
+                    "data_type": "string",
+                    "example_values": [
+                        "service_reference"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.incident.impacted_services.*.id",
+                    "data_type": "string",
+                    "example_values": [
+                        "PZ020AS"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.incident.impacted_services.*.html_url",
+                    "data_type": "string",
+                    "example_values": [
+                        "https://phantomlab.pagerduty.com/services/PZ020AS"
+                    ],
+                    "contains": [
+                        "url"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.incident.incident_number",
+                    "data_type": "numeric",
+                    "example_values": [
+                        56
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.incident.is_mergeable",
+                    "data_type": "boolean",
+                    "example_values": [
+                        true,
+                        false
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.incident.urgency",
+                    "data_type": "string",
+                    "example_values": [
+                        "high"
                     ]
                 }
             ],

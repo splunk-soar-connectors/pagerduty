@@ -69,3 +69,31 @@ def display_escalations(provides, all_app_runs, context):
             results.append(ctx_result)
     # print context
     return 'display_escalations.html'
+
+
+def display_users(provides, all_app_runs, context):
+
+    context['results'] = results = []
+    for summary, action_results in all_app_runs:
+        for result in action_results:
+
+            ctx_result = get_ctx_result(result)
+            if (not ctx_result):
+                continue
+            results.append(ctx_result)
+    # print context
+    return 'display_users.html'
+
+
+def display_services(provides, all_app_runs, context):
+
+    context['results'] = results = []
+    for summary, action_results in all_app_runs:
+        for result in action_results:
+
+            ctx_result = get_ctx_result(result)
+            if (not ctx_result):
+                continue
+            results.append(ctx_result)
+    # print context
+    return 'display_services.html'
