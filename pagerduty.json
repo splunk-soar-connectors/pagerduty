@@ -145,7 +145,7 @@
                     "data_path": "action_result.data.*.html_url",
                     "data_type": "string",
                     "example_values": [
-                        "https://phantomlab.pagerduty.com/teams/P3Y9EUF"
+                        "https://test.pagerduty.com/teams/P3Y9EUF"
                     ],
                     "contains": [
                         "url"
@@ -206,8 +206,7 @@
                     "data_path": "action_result.data.*.escalation_policy.html_url",
                     "data_type": "string",
                     "example_values": [
-                        "https://splunk-phantom.pagerduty.com/escalation_policies/P1TFOW9",
-                        "https://phantomlab.pagerduty.com/escalation_policies/PEEMY9J"
+                        "https://test.pagerduty.com/escalation_policies/PEEMY9J"
                     ],
                     "contains": [
                         "url"
@@ -267,8 +266,7 @@
                     "data_path": "action_result.data.*.user.html_url",
                     "data_type": "string",
                     "example_values": [
-                        "https://splunk-phantom.pagerduty.com/users/PG4RNZ3",
-                        "https://phantomlab.pagerduty.com/users/P9GBXBY"
+                        "https://test.pagerduty.com/users/P9GBXBY"
                     ],
                     "contains": [
                         "url"
@@ -302,8 +300,7 @@
                     "data_path": "action_result.data.*.user.summary",
                     "data_type": "string",
                     "example_values": [
-                        "Matt Tichenor",
-                        "Herman Edwards"
+                        "Test User"
                     ],
                     "column_name": "User Name",
                     "column_order": 3
@@ -380,7 +377,7 @@
                     "data_path": "action_result.data.*.schedule.html_url",
                     "data_type": "string",
                     "example_values": [
-                        "https://phantomlab.pagerduty.com/schedules/PZEALXW"
+                        "https://test.pagerduty.com/schedules/PZEALXW"
                     ],
                     "contains": [
                         "url"
@@ -461,7 +458,7 @@
                     "data_path": "action_result.data.*.description",
                     "data_type": "string",
                     "example_values": [
-                        "This service was created during onboarding on April 7, 2016."
+                        "This is service description."
                     ]
                 },
                 {
@@ -630,7 +627,7 @@
                     "data_path": "action_result.data.*.integrations.*.html_url",
                     "data_type": "string",
                     "example_values": [
-                        "https://phantomlab.pagerduty.com/services/P85HN53/integrations/PDG5H2O"
+                        "https://test.pagerduty.com/services/P85HN53/integrations/PDG5H2O"
                     ],
                     "contains": [
                         "url"
@@ -686,7 +683,7 @@
                     "data_path": "action_result.data.*.escalation_policy.html_url",
                     "data_type": "string",
                     "example_values": [
-                        "https://phantomlab.pagerduty.com/escalation_policies/PE0BI2T"
+                        "https://test.pagerduty.com/escalation_policies/PE0BI2T"
                     ],
                     "contains": [
                         "url"
@@ -714,7 +711,7 @@
                     "data_path": "action_result.data.*.html_url",
                     "data_type": "string",
                     "example_values": [
-                        "https://phantomlab.pagerduty.com/services/P85HN53"
+                        "https://test.pagerduty.com/services/P85HN53"
                     ],
                     "contains": [
                         "url"
@@ -755,7 +752,7 @@
                     "data_path": "action_result.data.*.teams.*.html_url",
                     "data_type": "string",
                     "example_values": [
-                        "https://phantomlab.pagerduty.com/teams/P3Y9EUF"
+                        "https://test.pagerduty.com/teams/P3Y9EUF"
                     ],
                     "contains": [
                         "url"
@@ -842,8 +839,7 @@
                     "data_path": "action_result.data.*.email",
                     "data_type": "string",
                     "example_values": [
-                        "Herman@phantom.us",
-                        "hvaghela@splunk.com"
+                        "test@example.com"
                     ],
                     "contains": [
                         "email"
@@ -889,8 +885,7 @@
                     "data_path": "action_result.data.*.name",
                     "data_type": "string",
                     "example_values": [
-                        "Herman Edwards",
-                        "Heena"
+                        "Test User"
                     ],
                     "column_name": "Name",
                     "column_order": 1
@@ -995,7 +990,7 @@
                     "data_path": "action_result.data.*.teams.*.html_url",
                     "data_type": "string",
                     "example_values": [
-                        "https://phantomlab.pagerduty.com/teams/P3Y9EUF"
+                        "https://test.pagerduty.com/teams/P3Y9EUF"
                     ],
                     "contains": [
                         "url"
@@ -1005,7 +1000,7 @@
                     "data_path": "action_result.data.*.html_url",
                     "data_type": "string",
                     "example_values": [
-                        "https://phantomlab.pagerduty.com/users/PY7HDXJ"
+                        "https://test.pagerduty.com/users/PY7HDXJ"
                     ],
                     "contains": [
                         "url"
@@ -1015,7 +1010,7 @@
                     "data_path": "action_result.data.*.summary",
                     "data_type": "string",
                     "example_values": [
-                        "Heena"
+                        "Test User"
                     ]
                 },
                 {
@@ -1192,7 +1187,7 @@
                     "data_path": "action_result.data.*.escalation_rules.*.rule_object.email",
                     "data_type": "string",
                     "example_values": [
-                        "herman@phantom.us"
+                        "user@example.us"
                     ]
                 },
                 {
@@ -1206,7 +1201,7 @@
                     "data_path": "action_result.data.*.escalation_rules.*.rule_object.name",
                     "data_type": "string",
                     "example_values": [
-                        "Herman Edwards"
+                        "Test User"
                     ]
                 },
                 {
@@ -1231,7 +1226,7 @@
                     "data_path": "action_result.data.*.escalation_rules.*.targets.*.email",
                     "data_type": "string",
                     "example_values": [
-                        "herman@phantom.us"
+                        "test@example.us"
                     ]
                 },
                 {
@@ -1245,7 +1240,7 @@
                     "data_path": "action_result.data.*.escalation_rules.*.targets.*.name",
                     "data_type": "string",
                     "example_values": [
-                        "Herman Edwards"
+                        "Test User"
                     ]
                 },
                 {
@@ -1322,7 +1317,7 @@
                     "data_path": "action_result.data.*.services.*.description",
                     "data_type": "string",
                     "example_values": [
-                        "This service was created during onboarding on April 7, 2016."
+                        "This is sevice description."
                     ]
                 },
                 {
@@ -1451,7 +1446,7 @@
                     "data_path": "action_result.data.*.html_url",
                     "data_type": "string",
                     "example_values": [
-                        "https://phantomlab.pagerduty.com/escalation_policies/PEEMY9J"
+                        "https://test.pagerduty.com/escalation_policies/PEEMY9J"
                     ],
                     "contains": [
                         "url"
@@ -1475,14 +1470,14 @@
                     "data_path": "action_result.data.*.escalation_rules.*.targets.*.summary",
                     "data_type": "string",
                     "example_values": [
-                        "Herman Edwards"
+                        "Test User"
                     ]
                 },
                 {
                     "data_path": "action_result.data.*.escalation_rules.*.targets.*.html_url",
                     "data_type": "string",
                     "example_values": [
-                        "https://phantomlab.pagerduty.com/users/P9GBXBY"
+                        "https://test.pagerduty.com/users/P9GBXBY"
                     ],
                     "contains": [
                         "url"
@@ -1541,7 +1536,7 @@
                     "data_path": "action_result.data.*.teams.*.html_url",
                     "data_type": "string",
                     "example_values": [
-                        "https://phantomlab.pagerduty.com/teams/P3Y9EUF"
+                        "https://test.pagerduty.com/teams/P3Y9EUF"
                     ],
                     "contains": [
                         "url"
@@ -1568,7 +1563,7 @@
                     "data_path": "action_result.data.*.services.*.html_url",
                     "data_type": "string",
                     "example_values": [
-                        "https://phantomlab.pagerduty.com/services/P85HN53"
+                        "https://test.pagerduty.com/services/P85HN53"
                     ],
                     "contains": [
                         "url"
@@ -1694,8 +1689,7 @@
                     "data_path": "action_result.parameter.title",
                     "data_type": "string",
                     "example_values": [
-                        "It is broken",
-                        "test creation 12"
+                        "Create Incident"
                     ]
                 },
                 {
@@ -1707,8 +1701,7 @@
                     "column_name": "Email",
                     "column_order": 5,
                     "example_values": [
-                        "herman@phantom.us",
-                        "hvaghela@splunk.com"
+                        "test@example.com"
                     ]
                 },
                 {
@@ -1720,9 +1713,7 @@
                     "data_path": "action_result.summary.incident_key",
                     "data_type": "string",
                     "example_values": [
-                        "86f03691406c4f5299ca1b06509b57ca",
-                        "22c20aeb7819414fb91db31493c7f16e",
-                        "cec632fb2c1d4b1a970e7063578d711e"
+                        "cbd632fb2c1d4b1a970e7063578d711e"
                     ],
                     "contains": [
                         "md5"
@@ -1734,9 +1725,7 @@
                     "data_path": "action_result.message",
                     "data_type": "string",
                     "example_values": [
-                        "Incident key: 86f03691406c4f5299ca1b06509b57ca",
-                        "Incident key: 22c20aeb7819414fb91db31493c7f16e",
-                        "Incident key: cec632fb2c1d4b1a970e7063578d711e"
+                        "Incident key: cbd632fb2c1d4b1a970e7063578d711e"
                     ]
                 },
                 {
@@ -1774,7 +1763,7 @@
                     "data_path": "action_result.data.*.incident.assignments.*.assignee.summary",
                     "data_type": "string",
                     "example_values": [
-                        "Ryan Russell"
+                        "Test User"
                     ]
                 },
                 {
@@ -1797,7 +1786,7 @@
                     "data_path": "action_result.data.*.incident.assignments.*.assignee.html_url",
                     "data_type": "string",
                     "example_values": [
-                        "https://phantomlab.pagerduty.com/users/PVM46FA"
+                        "https://test.pagerduty.com/users/PVM46FA"
                     ],
                     "contains": [
                         "url"
@@ -1818,7 +1807,7 @@
                     "data_path": "action_result.data.*.incident.summary",
                     "data_type": "string",
                     "example_values": [
-                        "[#56] test creation 12"
+                        "test creation"
                     ]
                 },
                 {
@@ -1925,7 +1914,7 @@
                     "data_path": "action_result.data.*.incident.escalation_policy.html_url",
                     "data_type": "string",
                     "example_values": [
-                        "https://phantomlab.pagerduty.com/escalation_policies/PE0BI2T"
+                        "https://test.pagerduty.com/escalation_policies/PE0BI2T"
                     ],
                     "contains": [
                         "url"
@@ -1976,7 +1965,7 @@
                     "data_path": "action_result.data.*.incident.first_trigger_log_entry.summary",
                     "data_type": "string",
                     "example_values": [
-                        "Triggered through the website"
+                        "Log Summary"
                     ]
                 },
                 {
@@ -1997,7 +1986,7 @@
                     "data_path": "action_result.data.*.incident.first_trigger_log_entry.html_url",
                     "data_type": "string",
                     "example_values": [
-                        "https://phantomlab.pagerduty.com/incidents/PTX014C/log_entries/ROGYV75UOIN0725VJLHVWVL9L2"
+                        "https://test.pagerduty.com/incidents/PTX014C/log_entries/ROGYV75UOIN0725VJLHVWVL9L2"
                     ],
                     "contains": [
                         "url"
@@ -2021,14 +2010,14 @@
                     "data_path": "action_result.data.*.incident.description",
                     "data_type": "string",
                     "example_values": [
-                        "test creation 12"
+                        "test creation"
                     ]
                 },
                 {
                     "data_path": "action_result.data.*.incident.html_url",
                     "data_type": "string",
                     "example_values": [
-                        "https://phantomlab.pagerduty.com/incidents/PTX014C"
+                        "https://test.pagerduty.com/incidents/PTX014C"
                     ],
                     "contains": [
                         "url"
@@ -2189,7 +2178,7 @@
                     "data_path": "action_result.data.*.incident.impacted_services.*.html_url",
                     "data_type": "string",
                     "example_values": [
-                        "https://phantomlab.pagerduty.com/services/PZ020AS"
+                        "https://test.pagerduty.com/services/PZ020AS"
                     ],
                     "contains": [
                         "url"
@@ -2287,7 +2276,7 @@
                     "data_path": "action_result.data.*.user.name",
                     "data_type": "string",
                     "example_values": [
-                        "Herman Edwards"
+                        "Test User"
                     ],
                     "column_name": "Name",
                     "column_order": 1
@@ -2296,7 +2285,7 @@
                     "data_path": "action_result.data.*.user.email",
                     "data_type": "string",
                     "example_values": [
-                        "herman@phantom.us"
+                        "test@example.us"
                     ],
                     "contains": [
                         "email"
@@ -2316,7 +2305,6 @@
                     "data_path": "action_result.message",
                     "data_type": "string",
                     "example_values": [
-                        "Num users: 3",
                         "Num users: 2"
                     ]
                 },
@@ -2377,7 +2365,7 @@
                     "data_path": "action_result.data.*.escalation_policy.html_url",
                     "data_type": "string",
                     "example_values": [
-                        "https://phantomlab.pagerduty.com/escalation_policies/PE0BI2T"
+                        "https://test.pagerduty.com/escalation_policies/PE0BI2T"
                     ],
                     "contains": [
                         "url"
@@ -2447,7 +2435,7 @@
                     "data_path": "action_result.data.*.user.teams.*.html_url",
                     "data_type": "string",
                     "example_values": [
-                        "https://phantomlab.pagerduty.com/teams/P3Y9EUF"
+                        "https://test.pagerduty.com/teams/P3Y9EUF"
                     ],
                     "contains": [
                         "url"
@@ -2457,7 +2445,7 @@
                     "data_path": "action_result.data.*.user.html_url",
                     "data_type": "string",
                     "example_values": [
-                        "https://phantomlab.pagerduty.com/users/P9GBXBY"
+                        "https://test.pagerduty.com/users/P9GBXBY"
                     ],
                     "contains": [
                         "url"
@@ -2467,7 +2455,7 @@
                     "data_path": "action_result.data.*.user.summary",
                     "data_type": "string",
                     "example_values": [
-                        "Herman Edwards"
+                        "Test User"
                     ]
                 },
                 {
@@ -2559,7 +2547,7 @@
                     "data_path": "action_result.data.*.user.notification_rules.*.summary",
                     "data_type": "string",
                     "example_values": [
-                        "0 minutes: channel POKA084"
+                        "Rule Summary"
                     ]
                 },
                 {
@@ -2608,7 +2596,7 @@
                     "data_path": "action_result.data.*.schedule.summary",
                     "data_type": "string",
                     "example_values": [
-                        "New Schedule #1"
+                        "Schedule Summary"
                     ]
                 },
                 {
@@ -2629,7 +2617,7 @@
                     "data_path": "action_result.data.*.schedule.html_url",
                     "data_type": "string",
                     "example_values": [
-                        "https://phantomlab.pagerduty.com/schedules/PZEALXW"
+                        "https://test.pagerduty.com/schedules/PZEALXW"
                     ],
                     "contains": [
                         "url"
@@ -2704,7 +2692,7 @@
                     "data_path": "action_result.data.*.name",
                     "data_type": "string",
                     "example_values": [
-                        "Herman Edwards"
+                        "Test User"
                     ],
                     "column_name": "Name",
                     "column_order": 1
@@ -2713,7 +2701,7 @@
                     "data_path": "action_result.data.*.email",
                     "data_type": "string",
                     "example_values": [
-                        "herman@phantom.us"
+                        "test@example.us"
                     ],
                     "contains": [
                         "email"
@@ -2725,15 +2713,14 @@
                     "data_path": "action_result.summary.name",
                     "data_type": "string",
                     "example_values": [
-                        "Herman Edwards"
+                        "Test User"
                     ]
                 },
                 {
                     "data_path": "action_result.message",
                     "data_type": "string",
                     "example_values": [
-                        "name: Herman Edwards",
-                        "Name: Herman Edwards"
+                        "Name: Test User"
                     ]
                 },
                 {
@@ -2810,7 +2797,7 @@
                     "data_path": "action_result.data.*.teams.*.html_url",
                     "data_type": "string",
                     "example_values": [
-                        "https://phantomlab.pagerduty.com/teams/P3Y9EUF"
+                        "https://test.pagerduty.com/teams/P3Y9EUF"
                     ],
                     "contains": [
                         "url"
@@ -2820,7 +2807,7 @@
                     "data_path": "action_result.data.*.html_url",
                     "data_type": "string",
                     "example_values": [
-                        "https://phantomlab.pagerduty.com/users/P9GBXBY"
+                        "https://test.pagerduty.com/users/P9GBXBY"
                     ],
                     "contains": [
                         "url"
@@ -2830,7 +2817,7 @@
                     "data_path": "action_result.data.*.summary",
                     "data_type": "string",
                     "example_values": [
-                        "Herman Edwards"
+                        "Test User"
                     ]
                 },
                 {
@@ -2922,7 +2909,7 @@
                     "data_path": "action_result.data.*.notification_rules.*.summary",
                     "data_type": "string",
                     "example_values": [
-                        "0 minutes: channel POKA084"
+                        "Rule Summary"
                     ]
                 },
                 {
