@@ -77,7 +77,7 @@
                     "contains": [
                         "pagerduty team id"
                     ],
-                    "column_name": "ID",
+                    "column_name": "Team ID",
                     "column_order": 1,
                     "example_values": [
                         "P3Y9EUF"
@@ -89,7 +89,7 @@
                     "contains": [
                         "pagerduty team"
                     ],
-                    "column_name": "Name",
+                    "column_name": "Team Name",
                     "column_order": 0,
                     "example_values": [
                         "IT"
