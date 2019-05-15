@@ -9,13 +9,11 @@
 
 {% block widget_content %} <!-- Main Start Block -->
 
-<!--
-File: ./pagerduty/display_oncall_user.html
+<!-- File: display_oncall_user.html
+  Copyright (c) 2016-2019 Splunk Inc.
 
-Copyright (c) 2016-2018 Splunk Inc.
-
-SPLUNK CONFIDENTIAL – Use or disclosure of this material in whole or in part
-without a valid written license from Splunk Inc. is PROHIBITED.
+  SPLUNK CONFIDENTIAL - Use or disclosure of this material in whole or in part
+  without a valid written license from Splunk Inc. is PROHIBITED.
 -->
 
 <style>
@@ -99,6 +97,25 @@ a:hover {
 
 {% endfor %} <!-- loop for each result end -->
 </div> <!-- Main Div -->
-
+<script>
+    $.extend(true, $.fn.dataTable.defaults, {
+        "searching": true,
+        "bLengthChange": false,
+        "language": {
+          "paginate": {
+            "previous": "<i class='fa fa-angle-left fa-lg'></i>",
+            "next": "<i class='fa fa-angle-right fa-lg'></i>"
+          },
+          "emptyTable": "No data available"
+        },
+        "dom": '<"top">rt<"bottom"p><"clear">',
+        drawCallback: function(settings) {
+          var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
+          pagination.toggle(this.api().page.info().pages > 1);
+        }
+      });
+      $('.dataTable').DataTable();
+    
+    </script>    
 {% endblock %} <!-- Main Start Block -->
 

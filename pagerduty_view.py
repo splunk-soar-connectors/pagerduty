@@ -1,9 +1,9 @@
 # --
 # File: pagerduty_view.py
 #
-# Copyright (c) 2016-2018 Splunk Inc.
+# Copyright (c) 2016-2019 Splunk Inc.
 #
-# SPLUNK CONFIDENTIAL – Use or disclosure of this material in whole or in part
+# SPLUNK CONFIDENTIAL - Use or disclosure of this material in whole or in part
 # without a valid written license from Splunk Inc. is PROHIBITED.
 #
 # --
@@ -27,20 +27,6 @@ def get_ctx_result(result):
         ctx_result['summary'] = summary
 
     return ctx_result
-
-
-def display_oncall(provides, all_app_runs, context):
-
-    context['results'] = results = []
-    for summary, action_results in all_app_runs:
-        for result in action_results:
-
-            ctx_result = get_ctx_result(result)
-            if (not ctx_result):
-                continue
-            results.append(ctx_result)
-    # print context
-    return 'display_oncall.html'
 
 
 def display_oncall_user(provides, all_app_runs, context):
@@ -69,3 +55,45 @@ def display_user_info(provides, all_app_runs, context):
             results.append(ctx_result)
     # print context
     return 'display_user_info.html'
+
+
+def display_escalations(provides, all_app_runs, context):
+
+    context['results'] = results = []
+    for summary, action_results in all_app_runs:
+        for result in action_results:
+
+            ctx_result = get_ctx_result(result)
+            if (not ctx_result):
+                continue
+            results.append(ctx_result)
+    # print context
+    return 'display_escalations.html'
+
+
+def display_users(provides, all_app_runs, context):
+
+    context['results'] = results = []
+    for summary, action_results in all_app_runs:
+        for result in action_results:
+
+            ctx_result = get_ctx_result(result)
+            if (not ctx_result):
+                continue
+            results.append(ctx_result)
+    # print context
+    return 'display_users.html'
+
+
+def display_services(provides, all_app_runs, context):
+
+    context['results'] = results = []
+    for summary, action_results in all_app_runs:
+        for result in action_results:
+
+            ctx_result = get_ctx_result(result)
+            if (not ctx_result):
+                continue
+            results.append(ctx_result)
+    # print context
+    return 'display_services.html'
