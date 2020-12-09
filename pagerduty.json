@@ -6,15 +6,16 @@
     "package_name": "phantom_pagerduty",
     "type": "ticketing",
     "license": "Copyright (c) 2016-2019 Splunk Inc.",
-    "main_module": "pagerduty_connector.pyc",
+    "main_module": "pagerduty_connector.py",
     "app_version": "1.0.26",
     "utctime_updated": "2019-05-16T18:23:59.000000Z",
     "product_vendor": "PagerDuty",
     "product_name": "PagerDuty",
     "product_version_regex": ".*",
-    "min_phantom_version": "4.0.1068",
+    "min_phantom_version": "4.8.24304",
     "logo": "logo_pagerduty.svg",
     "logo_dark": "logo_pagerduty_dark.svg",
+    "python_version": "3",
     "configuration": {
         "base_url": {
             "description": "PagerDuty base url e.g. https://api.pagerduty.com/",
