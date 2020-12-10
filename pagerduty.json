@@ -64,7 +64,8 @@
                     "data_path": "action_result.status",
                     "data_type": "string",
                     "example_values": [
-                        "success"
+                        "success",
+                        "failed"
                     ]
                 },
                 {
@@ -187,7 +188,8 @@
                     "data_path": "action_result.status",
                     "data_type": "string",
                     "example_values": [
-                        "success"
+                        "success",
+                        "failed"
                     ]
                 },
                 {
@@ -221,7 +223,7 @@
                     "contains": [
                         "pagerduty escalation id"
                     ],
-                    "column_name": "escalation id",
+                    "column_name": "Escalation ID",
                     "column_order": 0
                 },
                 {
@@ -393,7 +395,6 @@
                 "team_ids": {
                     "description": "Comma-separated list of team IDs",
                     "data_type": "string",
-                    "required": false,
                     "primary": true,
                     "contains": [
                         "pagerduty team id"
@@ -413,7 +414,8 @@
                     "data_path": "action_result.status",
                     "data_type": "string",
                     "example_values": [
-                        "success"
+                        "success",
+                        "failed"
                     ]
                 },
                 {
@@ -756,6 +758,11 @@
                 {
                     "data_path": "action_result.data.*.addons",
                     "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.updated_at",
+                    "data_type": "string",
+                    "example_value": "2019-05-10T02:16:51-07:00"
                 }
             ],
             "versions": "EQ(*)"
@@ -771,7 +778,6 @@
                 "team_ids": {
                     "description": "Comma-separated list of team IDs",
                     "data_type": "string",
-                    "required": false,
                     "primary": true,
                     "contains": [
                         "pagerduty team id"
@@ -791,7 +797,8 @@
                     "data_path": "action_result.status",
                     "data_type": "string",
                     "example_values": [
-                        "success"
+                        "success",
+                        "failed"
                     ]
                 },
                 {
@@ -1098,7 +1105,6 @@
                 "user_ids": {
                     "description": "Comma-separated list of user IDs",
                     "data_type": "string",
-                    "required": false,
                     "primary": true,
                     "contains": [
                         "pagerduty user id"
@@ -1108,7 +1114,6 @@
                 "team_ids": {
                     "description": "Comma-separated list of team IDs",
                     "data_type": "string",
-                    "required": false,
                     "primary": true,
                     "contains": [
                         "pagerduty team id"
@@ -1128,7 +1133,8 @@
                     "data_path": "action_result.status",
                     "data_type": "string",
                     "example_values": [
-                        "success"
+                        "success",
+                        "failed"
                     ]
                 },
                 {
@@ -1560,6 +1566,11 @@
                     "contains": [
                         "url"
                     ]
+                },
+                {
+                    "data_path": "action_result.data.*.on_call_handoff_notifications",
+                    "data_type": "string",
+                    "example_value": "if_has_services"
                 }
             ],
             "versions": "EQ(*)"
@@ -1607,7 +1618,6 @@
                 "escalation_id": {
                     "description": "ID of escalation policy to use",
                     "data_type": "string",
-                    "required": false,
                     "primary": true,
                     "contains": [
                         "pagerduty escalation id"
@@ -1617,7 +1627,6 @@
                 "assignee_id": {
                     "description": "ID of user to assign incident to",
                     "data_type": "string",
-                    "required": false,
                     "primary": true,
                     "contains": [
                         "pagerduty user id"
@@ -1633,7 +1642,8 @@
                     "data_path": "action_result.status",
                     "data_type": "string",
                     "example_values": [
-                        "success"
+                        "success",
+                        "failed"
                     ],
                     "column_name": "Status",
                     "column_order": 0
@@ -2196,6 +2206,11 @@
                     "example_values": [
                         "high"
                     ]
+                },
+                {
+                    "data_path": "action_result.data.*.incident.assigned_via",
+                    "data_type": "string",
+                    "example_value": "escalation_policy"
                 }
             ],
             "versions": "EQ(*)"
@@ -2231,7 +2246,8 @@
                     "data_path": "action_result.status",
                     "data_type": "string",
                     "example_values": [
-                        "success"
+                        "success",
+                        "failed"
                     ]
                 },
                 {
@@ -2647,7 +2663,8 @@
                     "data_path": "action_result.status",
                     "data_type": "string",
                     "example_values": [
-                        "success"
+                        "success",
+                        "failed"
                     ]
                 },
                 {
