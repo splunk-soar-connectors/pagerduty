@@ -16,6 +16,9 @@
     "logo": "logo_pagerduty.svg",
     "logo_dark": "logo_pagerduty_dark.svg",
     "python_version": "3",
+    "latest_tested_versions": [
+        ""
+    ],
     "configuration": {
         "base_url": {
             "description": "PagerDuty base url e.g. https://api.pagerduty.com/",
@@ -2303,7 +2306,7 @@
                     "data_path": "action_result.summary.num_users",
                     "data_type": "numeric",
                     "example_values": [
-                        "3",
+                        3,
                         2
                     ]
                 },
