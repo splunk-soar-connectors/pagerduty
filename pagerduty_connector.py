@@ -1,5 +1,5 @@
 # File: pagerduty_connector.py
-# Copyright (c) 2016-2019 Splunk Inc.
+# Copyright (c) 2016-2020 Splunk Inc.
 #
 # SPLUNK CONFIDENTIAL - Use or disclosure of this material in whole or in part
 # without a valid written license from Splunk Inc. is PROHIBITED.
@@ -15,9 +15,10 @@ from phantom.action_result import ActionResult
 # Imports local to this App
 from pagerduty_consts import *
 
+import sys
 import json
 import requests
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, UnicodeDammit
 
 
 class RetVal4(tuple):
@@ -48,12 +49,33 @@ class PagerDutyConnector(BaseConnector):
         super(PagerDutyConnector, self).__init__()
 
         self._headers = None
+        self._python_version = None
+
+    def _handle_py_ver_compat_for_input_str(self, input_str):
+        """
+        This method returns the encoded|original string based on the Python version.
+        :param input_str: Input string to be processed
+        :return: input_str (Processed input string based on following logic 'input_str - Python 3; encoded input_str - Python 2')
+        """
+        try:
+            if input_str and self._python_version < 3:
+                input_str = UnicodeDammit(input_str).unicode_markup.encode('utf-8')
+        except:
+            self.debug_print("Error occurred while handling python 2to3 compatibility for the input string")
+
+        return input_str
 
     def initialize(self):
 
+        # Fetching the Python major version
+        try:
+            self._python_version = int(sys.version_info[0])
+        except:
+            return self.set_status(phantom.APP_ERROR, "Error occurred while getting the Phantom server's Python major version.")
+
         config = self.get_config()
 
-        self._rest_url = config[PAGERDUTY_JSON_BASEURL].rstrip('/')
+        self._rest_url = self._handle_py_ver_compat_for_input_str(config[PAGERDUTY_JSON_BASEURL].rstrip('/'))
         api_key = config[PAGERDUTY_API_KEY]
 
         self._headers = {
@@ -109,16 +131,18 @@ class PagerDutyConnector(BaseConnector):
         elif 'html' in content_type:
             try:
                 soup = BeautifulSoup(r.text, "html.parser")
-                resp_data = soup.text.encode('utf-8')
+                for element in soup(["script", "style", "footer", "nav"]):
+                    element.extract()
+                resp_data = soup.text
             except Exception as e:
                 self.debug_print("Handled exception", e)
                 result.set_status(phantom.APP_ERROR, "Unable to parse response as a HTML status_code: {0}, data: {1}".format(r.status_code, self._normalize_text(r.text)))
         else:
-            resp_data = r.text.encode('utf-8')
+            resp_data = r.text
 
         if not (200 <= r.status_code < 300):
             return RetVal4(result.set_status(phantom.APP_ERROR, "Call returned error, status_code: {0}, data: {1}"
-                    .format(r.status_code, self._normalize_text(resp_data))), None, None, None)
+                    .format(r.status_code, self._handle_py_ver_compat_for_input_str(self._normalize_text(resp_data)))), None, None, None)
 
         return RetVal4(phantom.APP_SUCCESS, status_code, resp_type, resp_data)
 
@@ -305,12 +329,21 @@ class PagerDutyConnector(BaseConnector):
             if list_teams_id:
                 for team_id in list_teams_id:
                     str_endpoint = '{}{}{}{}'.format(str_endpoint, 'team_ids[]=', team_id, '&')
-                str_endpoint = str_endpoint[:-1]
+                if param.get('user_ids') is None:
+                    str_endpoint = str_endpoint[:-1]
             else:
                 return action_result.set_status(phantom.APP_ERROR, 'Please provide valid team_ids')
 
         if param.get('user_ids'):
-            str_endpoint = '{}{}{}'.format(str_endpoint, '&', param.get('user_ids'))
+            list_users_id = [x.strip() for x in param.get('user_ids').split(',')]
+            list_users_id = ' '.join(list_users_id).split()
+            if list_users_id:
+                for user_id in list_users_id:
+                    str_endpoint = '{}{}{}{}'.format(str_endpoint, 'user_ids[]=', user_id, '&')
+                str_endpoint = str_endpoint[:-1]
+            else:
+                return action_result.set_status(phantom.APP_ERROR, 'Please provide valid user_ids')
+
 
         endpoint = '/escalation_policies?{}'.format(str_endpoint)
 
