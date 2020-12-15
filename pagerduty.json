@@ -1100,7 +1100,7 @@
         {
             "action": "list policies",
             "description": "Get list of escalation policies on PagerDuty",
-            "verbose": "Results can be filtered based in user IDs and team IDs<br><br>To filter on user IDs, add a comma-separated list to the <b>user_ids</b> parameter. The results will include only escalation policies that apply to any users in the list.<br><br>To filter on team IDs, add a comma-separated list to the <b>team_ids</b> parameter. The results will include all escalation policies that apply to any team in the list.",
+            "verbose": "Results can be filtered based in user IDs and team IDs<br><br>To filter on user IDs, add a comma-separated list to the <b>user_ids</b> parameter. The results will include all escalation policies that apply to any user in the list.<br><br>To filter on team IDs, add a comma-separated list to the <b>team_ids</b> parameter. The results will include all escalation policies that apply to any team in the list.",
             "type": "investigate",
             "identifier": "list_escalations",
             "read_only": true,
