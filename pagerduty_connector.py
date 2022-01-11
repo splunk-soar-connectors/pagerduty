@@ -119,7 +119,7 @@ class PagerDutyConnector(BaseConnector):
                 resp_data = r.json()
             except:
                 result.set_status(phantom.APP_ERROR, "Unable to parse response as a JSON status_code: {0}, data: {1}"
-                .format(r.status_code, self._normalize_text(r.text)))
+                    .format(r.status_code, self._normalize_text(r.text)))
 
             if resp_data:
                 error = resp_data.get('error')
@@ -140,7 +140,7 @@ class PagerDutyConnector(BaseConnector):
                         '\n'.join(error.get('errors', [])))
 
                 return RetVal4(result.set_status(phantom.APP_ERROR, "Error detected, status_code: {0}, data: {1}"
-                .format(r.status_code, error_message)), None, None, None)
+                    .format(r.status_code, error_message)), None, None, None)
 
         elif 'html' in content_type:
             try:
@@ -151,7 +151,7 @@ class PagerDutyConnector(BaseConnector):
             except Exception as e:
                 self.debug_print("Handled exception", e)
                 result.set_status(phantom.APP_ERROR, "Unable to parse response as a HTML status_code: {0}, data: {1}"
-                .format(r.status_code, self._normalize_text(r.text)))
+                    .format(r.status_code, self._normalize_text(r.text)))
         else:
             resp_data = r.text
 
