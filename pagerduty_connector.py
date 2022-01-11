@@ -128,8 +128,12 @@ class PagerDutyConnector(BaseConnector):
             if error:
 
                 if error.get('code', -1) == 2016:
-                    return RetVal4(result.set_status(phantom.APP_ERROR,
-                    "The email parameter is required to create incidents on this PagerDuty instance"), None, None, None)
+                    return RetVal4(result.set_status(
+                        phantom.APP_ERROR,
+                        "The email parameter is required to create incidents on this PagerDuty instance"),
+                        None,
+                        None,
+                        None)
 
                 error_message = "message: {0}, code: {1}, details: {2}".format(
                         error.get('message', 'None'),
@@ -148,7 +152,7 @@ class PagerDutyConnector(BaseConnector):
             except Exception as e:
                 self.debug_print("Handled exception", e)
                 result.set_status(phantom.APP_ERROR, "Unable to parse response as a HTML status_code: {0}, data: {1}"
-                    .format(r.status_code, self._normalize_text(r.text)))
+                .format(r.status_code, self._normalize_text(r.text)))
         else:
             resp_data = r.text
 
