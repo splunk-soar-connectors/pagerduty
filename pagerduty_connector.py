@@ -119,7 +119,8 @@ class PagerDutyConnector(BaseConnector):
             try:
                 resp_data = r.json()
             except:
-                result.set_status(phantom.APP_ERROR, "Unable to parse response as a JSON status_code: {0}, data: {1}".format(r.status_code, self._normalize_text(r.text)))
+                result.set_status(phantom.APP_ERROR, "Unable to parse response as a JSON status_code: {0}, data: {1}"
+                .format(r.status_code, self._normalize_text(r.text)))
 
             if resp_data:
                 error = resp_data.get('error')
@@ -127,14 +128,16 @@ class PagerDutyConnector(BaseConnector):
             if error:
 
                 if error.get('code', -1) == 2016:
-                    return RetVal4(result.set_status(phantom.APP_ERROR, "The email parameter is required to create incidents on this PagerDuty instance"), None, None, None)
+                    return RetVal4(result.set_status(phantom.APP_ERROR, 
+                    "The email parameter is required to create incidents on this PagerDuty instance"), None, None, None)
 
                 error_message = "message: {0}, code: {1}, details: {2}".format(
                         error.get('message', 'None'),
                         error.get('code', 'None'),
                         '\n'.join(error.get('errors', [])))
 
-                return RetVal4(result.set_status(phantom.APP_ERROR, "Error detected, status_code: {0}, data: {1}".format(r.status_code, error_message)), None, None, None)
+                return RetVal4(result.set_status(phantom.APP_ERROR, "Error detected, status_code: {0}, data: {1}"
+                .format(r.status_code, error_message)), None, None, None)
 
         elif 'html' in content_type:
             try:
@@ -144,7 +147,8 @@ class PagerDutyConnector(BaseConnector):
                 resp_data = soup.text
             except Exception as e:
                 self.debug_print("Handled exception", e)
-                result.set_status(phantom.APP_ERROR, "Unable to parse response as a HTML status_code: {0}, data: {1}".format(r.status_code, self._normalize_text(r.text)))
+                result.set_status(phantom.APP_ERROR, "Unable to parse response as a HTML status_code: {0}, data: {1}"
+                .format(r.status_code, self._normalize_text(r.text)))
         else:
             resp_data = r.text
 
@@ -501,7 +505,7 @@ if __name__ == '__main__':
 
     if (len(sys.argv) < 2):
         print("No test json specified as input")
-        exit(0)
+        sys.exit(0)
 
     with open(sys.argv[1]) as f:
         in_json = f.read()
@@ -513,4 +517,4 @@ if __name__ == '__main__':
         ret_val = connector._handle_action(json.dumps(in_json), None)
         print(json.dumps(json.loads(ret_val), indent=4))
 
-    exit(0)
+    sys.exit(0)
