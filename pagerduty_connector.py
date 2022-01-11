@@ -15,18 +15,17 @@
 #
 #
 # Phantom App imports
-import phantom.app as phantom
+import json
+import sys
 
-from phantom.base_connector import BaseConnector
+import phantom.app as phantom
+import requests
+from bs4 import BeautifulSoup, UnicodeDammit
 from phantom.action_result import ActionResult
+from phantom.base_connector import BaseConnector
 
 # Imports local to this App
 from pagerduty_consts import *
-
-import sys
-import json
-import requests
-from bs4 import BeautifulSoup, UnicodeDammit
 
 
 class RetVal4(tuple):
