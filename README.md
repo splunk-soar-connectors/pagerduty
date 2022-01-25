@@ -2,7 +2,7 @@
 # PagerDuty
 
 Publisher: Splunk  
-Connector Version: 2\.0\.3  
+Connector Version: 2\.0\.6  
 Product Vendor: PagerDuty  
 Product Name: PagerDuty  
 Product Version Supported (regex): "\.\*"  
@@ -10,7 +10,7 @@ Minimum Product Version: 4\.9\.39220
 
 This app integrates with PagerDuty to implement investigative and ticketing actions
 
-[comment]: # " File: readme.md"
+[comment]: # " File: README.md"
 [comment]: # "  Copyright (c) 2016-2020 Splunk Inc."
 [comment]: # ""
 [comment]: # "Licensed under the Apache License, Version 2.0 (the 'License');"
