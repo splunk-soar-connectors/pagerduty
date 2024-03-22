@@ -197,6 +197,8 @@ class PagerDutyConnector(BaseConnector):
         action_result = self.add_action_result(ActionResult(dict(param)))
 
         params = { "limit": 1 }
+
+        self.debug_print("Calling make rest call")
         ret_val, resp_data = self._make_rest_call('/incidents', action_result, params)
 
         if phantom.is_fail(ret_val):
@@ -219,6 +221,7 @@ class PagerDutyConnector(BaseConnector):
 
         set_name = dic_map.get(self.get_action_identifier())
 
+        self.debug_print("Entering while loop for paginator")
         while True:
             endpoint = '{}{}{}'.format(endpoint, '&offset=', offset)
             ret_val, resp_json = self._make_rest_call(endpoint, action_result)
@@ -243,6 +246,7 @@ class PagerDutyConnector(BaseConnector):
         # Add an action result to the App Run
         action_result = self.add_action_result(ActionResult(dict(param)))
 
+        self.debug_print("Calling paginator")
         result_list = self._paginator('/oncalls?', action_result)
 
         if phantom.is_fail(result_list):
@@ -251,6 +255,7 @@ class PagerDutyConnector(BaseConnector):
         for oncall in result_list:
             action_result.add_data(oncall)
 
+        self.debug_print("Updating summary")
         action_result.update_summary({'num_oncalls': len(result_list)})
 
         return action_result.set_status(phantom.APP_SUCCESS)
@@ -260,6 +265,7 @@ class PagerDutyConnector(BaseConnector):
         # Add an action result to the App Run
         action_result = self.add_action_result(ActionResult(dict(param)))
 
+        self.debug_print("Calling paginator")
         result_list = self._paginator('/teams?', action_result)
 
         if phantom.is_fail(result_list):
@@ -268,6 +274,7 @@ class PagerDutyConnector(BaseConnector):
         for team in result_list:
             action_result.add_data(team)
 
+        self.debug_print("Updating summary")
         action_result.update_summary({'total_teams': len(result_list)})
 
         return action_result.set_status(phantom.APP_SUCCESS)
@@ -290,6 +297,7 @@ class PagerDutyConnector(BaseConnector):
 
         endpoint = '/services?{}'.format(str_endpoint)
 
+        self.debug_print("Calling paginator")
         result_list = self._paginator(endpoint, action_result)
 
         if phantom.is_fail(result_list):
@@ -298,6 +306,7 @@ class PagerDutyConnector(BaseConnector):
         for service in result_list:
             action_result.add_data(service)
 
+        self.debug_print("Updating summary")
         action_result.update_summary({'num_services': len(result_list)})
 
         return action_result.set_status(phantom.APP_SUCCESS)
@@ -320,6 +329,7 @@ class PagerDutyConnector(BaseConnector):
 
         endpoint = '/users?{}'.format(str_endpoint)
 
+        self.debug_print("Calling paginator")
         result_list = self._paginator(endpoint, action_result)
 
         if phantom.is_fail(result_list):
@@ -328,6 +338,7 @@ class PagerDutyConnector(BaseConnector):
         for user in result_list:
             action_result.add_data(user)
 
+        self.debug_print("Updating summary")
         action_result.update_summary({'num_users': len(result_list)})
 
         return action_result.set_status(phantom.APP_SUCCESS)
@@ -360,7 +371,8 @@ class PagerDutyConnector(BaseConnector):
                 return action_result.set_status(phantom.APP_ERROR, 'Please provide valid user_ids')
 
         endpoint = '/escalation_policies?{}'.format(str_endpoint)
-
+        
+        self.debug_print("Calling paginator")
         result_list = self._paginator(endpoint, action_result)
 
         if phantom.is_fail(result_list):
@@ -372,6 +384,7 @@ class PagerDutyConnector(BaseConnector):
         for esc_pol in result_list:
             action_result.add_data(esc_pol)
 
+        self.debug_print("Updating summary")
         action_result.update_summary({'num_policies': len(result_list)})
 
         return action_result.set_status(phantom.APP_SUCCESS)
@@ -405,6 +418,7 @@ class PagerDutyConnector(BaseConnector):
         if 'email' in param:
             headers['From'] = param['email']
 
+        self.debug_print("Calling make rest call")
         ret_val, resp_data = self._make_rest_call('/incidents', action_result, data=body, headers=headers, method='post')
 
         if phantom.is_fail(ret_val):
@@ -412,6 +426,7 @@ class PagerDutyConnector(BaseConnector):
 
         action_result.add_data(resp_data)
 
+        self.debug_print("Updating summary")
         action_result.update_summary({'incident_key': resp_data.get('incident', {}).get('incident_key', "Unknown")})
 
         return action_result.set_status(phantom.APP_SUCCESS)
@@ -425,12 +440,14 @@ class PagerDutyConnector(BaseConnector):
         params = {'escalation_policy_ids[]': param['escalation_id']}
 
         # Find user IDs associated with escalation ID
+        self.debug_print("Making rest call")
         ret_val, resp_data_oncalls = self._make_rest_call('/oncalls', action_result, params=params)
 
         if phantom.is_fail(ret_val):
             return action_result.get_status()
 
         oncalls = resp_data_oncalls.get('oncalls')
+        self.debug_print("Updating summary")
         action_result.update_summary({'num_users': len(oncalls)})
 
         # Find additional info about each user
@@ -457,6 +474,7 @@ class PagerDutyConnector(BaseConnector):
 
         user_id = param.get('user_id')
 
+        self.debug_print("Making rest call")
         ret_val, resp_data = self._make_rest_call('/users/{0}'.format(user_id), action_result, params={})
 
         if phantom.is_fail(ret_val):
@@ -464,6 +482,7 @@ class PagerDutyConnector(BaseConnector):
 
         try:
             action_result.add_data(resp_data['user'])
+            self.debug_print("Updating summary")
             action_result.update_summary({'name': resp_data['user']['name']})
         except KeyError as e:
             return action_result.set_status(phantom.APP_ERROR, 'No user in response', e)
