@@ -371,7 +371,7 @@ class PagerDutyConnector(BaseConnector):
                 return action_result.set_status(phantom.APP_ERROR, 'Please provide valid user_ids')
 
         endpoint = '/escalation_policies?{}'.format(str_endpoint)
-        
+
         self.debug_print("Calling paginator")
         result_list = self._paginator(endpoint, action_result)
 
