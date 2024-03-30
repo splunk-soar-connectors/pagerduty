@@ -1,6 +1,6 @@
 # File: pagerduty_consts.py
 #
-# Copyright (c) 2016-2020 Splunk Inc.
+# Copyright (c) 2016-2024 Splunk Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,7 +13,7 @@
 # either express or implied. See the License for the specific language governing permissions
 # and limitations under the License.
 PAGERDUTY_JSON_BASEURL = "base_url"
-PAGERDUTY_API_KEY = "api_token"
+PAGERDUTY_API_KEY = "api_token"  # pragma: allowlist secret
 
 # Deprecated as of v2
 # PAGERDUTY_API_URI = "/api/v1"
