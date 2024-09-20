@@ -5,14 +5,14 @@
     "publisher": "Splunk",
     "package_name": "phantom_pagerduty",
     "type": "ticketing",
-    "license": "Copyright (c) 2016-2020 Splunk Inc.",
+    "license": "Copyright (c) 2016-2024 Splunk Inc.",
     "main_module": "pagerduty_connector.py",
     "app_version": "2.0.6",
     "utctime_updated": "2022-01-25T00:15:34.000000Z",
     "product_vendor": "PagerDuty",
     "product_name": "PagerDuty",
     "product_version_regex": ".*",
-    "min_phantom_version": "4.9.39220",
+    "min_phantom_version": "6.2.1",
     "fips_compliant": true,
     "logo": "logo_pagerduty.svg",
     "logo_dark": "logo_pagerduty_dark.svg",
@@ -2980,6 +2980,38 @@
             {
                 "module": "urllib3",
                 "input_file": "wheels/urllib3-1.26.7-py2.py3-none-any.whl"
+            }
+        ]
+    },
+    "pip39_dependencies": {
+        "wheel": [
+            {
+                "module": "beautifulsoup4",
+                "input_file": "wheels/py3/beautifulsoup4-4.9.1-py3-none-any.whl"
+            },
+            {
+                "module": "certifi",
+                "input_file": "wheels/py3/certifi-2024.8.30-py3-none-any.whl"
+            },
+            {
+                "module": "charset_normalizer",
+                "input_file": "wheels/py39/charset_normalizer-3.3.2-cp39-cp39-manylinux2014_x86_64.manylinux_2_17_x86_64.whl"
+            },
+            {
+                "module": "idna",
+                "input_file": "wheels/py3/idna-3.10-py3-none-any.whl"
+            },
+            {
+                "module": "requests",
+                "input_file": "wheels/py3/requests-2.32.0-py3-none-any.whl"
+            },
+            {
+                "module": "soupsieve",
+                "input_file": "wheels/py3/soupsieve-2.6-py3-none-any.whl"
+            },
+            {
+                "module": "urllib3",
+                "input_file": "wheels/py3/urllib3-2.2.3-py3-none-any.whl"
             }
         ]
     }
