@@ -217,6 +217,7 @@ class PagerDutyConnector(BaseConnector):
         ret_val, resp_data = self._make_rest_call("/incidents", action_result, params)
 
         if phantom.is_fail(ret_val):
+            self.save_progress(action_result.get_message())
             self.append_to_message("Test connectivity failed")
             return self.get_status()
 
