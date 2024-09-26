@@ -1,6 +1,6 @@
 # File: pagerduty_connector.py
 #
-# Copyright (c) 2016-2020 Splunk Inc.
+# Copyright (c) 2016-2024 Splunk Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -66,7 +66,7 @@ class PagerDutyConnector(BaseConnector):
         """
         try:
             if input_str and self._python_version < 3:
-                input_str = UnicodeDammit(input_str).unicode_markup.encode('utf-8')
+                input_str = UnicodeDammit(input_str).unicode_markup.encode("utf-8")
         except:
             self.debug_print("Error occurred while handling python 2to3 compatibility for the input string")
 
@@ -82,25 +82,26 @@ class PagerDutyConnector(BaseConnector):
 
         config = self.get_config()
 
-        self._rest_url = self._handle_py_ver_compat_for_input_str(config[PAGERDUTY_JSON_BASEURL].rstrip('/'))
+        self._rest_url = self._handle_py_ver_compat_for_input_str(config[PAGERDUTY_JSON_BASEURL].rstrip("/"))
         api_key = config[PAGERDUTY_API_KEY]
 
         self._headers = {
-            'Authorization': 'Token token={0}'.format(api_key),
-            'Content-Type': 'application/json',
-            'Accept': 'application/vnd.pagerduty+json;version=2'}
+            "Authorization": "Token token={0}".format(api_key),
+            "Content-Type": "application/json",
+            "Accept": "application/vnd.pagerduty+json;version=2",
+        }
 
         return phantom.APP_SUCCESS
 
     def _normalize_text(self, text):
         if text:
-            return text.replace('}', '}}').replace('{', '{{')
+            return text.replace("}", "}}").replace("{", "{{")
         else:
             return "Response data is None"
 
     def _parse_response(self, result, r):
 
-        content_type = r.headers.get('content-type')
+        content_type = r.headers.get("content-type")
         resp_type = content_type
 
         status_code = r.status_code
@@ -109,40 +110,45 @@ class PagerDutyConnector(BaseConnector):
         error = None
 
         # It's ok if r.text is None, dump that, if the result object supports recording it
-        if hasattr(result, 'add_debug_data'):
-            result.add_debug_data({'r_text': r.text if r else 'r is None'})
+        if hasattr(result, "add_debug_data"):
+            result.add_debug_data({"r_text": r.text if r else "r is None"})
 
-        if 'json' in content_type:
+        if "json" in content_type:
 
             # Try a json parse
             try:
                 resp_data = r.json()
             except:
-                result.set_status(phantom.APP_ERROR, "Unable to parse response as a JSON status_code: {0}, data: {1}"
-                    .format(r.status_code, self._normalize_text(r.text)))
+                result.set_status(
+                    phantom.APP_ERROR,
+                    "Unable to parse response as a JSON status_code: {0}, data: {1}".format(r.status_code, self._normalize_text(r.text)),
+                )
 
             if resp_data:
-                error = resp_data.get('error')
+                error = resp_data.get("error")
 
             if error:
 
-                if error.get('code', -1) == 2016:
-                    return RetVal4(result.set_status(
-                        phantom.APP_ERROR,
-                        "The email parameter is required to create incidents on this PagerDuty instance"),
+                if error.get("code", -1) == 2016:
+                    return RetVal4(
+                        result.set_status(phantom.APP_ERROR, "The email parameter is required to create incidents on this PagerDuty instance"),
                         None,
                         None,
-                        None)
+                        None,
+                    )
 
                 error_message = "message: {0}, code: {1}, details: {2}".format(
-                        error.get('message', 'None'),
-                        error.get('code', 'None'),
-                        '\n'.join(error.get('errors', [])))
+                    error.get("message", "None"), error.get("code", "None"), "\n".join(error.get("errors", []))
+                )
 
-                return RetVal4(result.set_status(phantom.APP_ERROR, "Error detected, status_code: {0}, data: {1}"
-                    .format(r.status_code, error_message)), None, None, None)
+                return RetVal4(
+                    result.set_status(phantom.APP_ERROR, "Error detected, status_code: {0}, data: {1}".format(r.status_code, error_message)),
+                    None,
+                    None,
+                    None,
+                )
 
-        elif 'html' in content_type:
+        elif "html" in content_type:
             try:
                 soup = BeautifulSoup(r.text, "html.parser")
                 for element in soup(["script", "style", "footer", "nav"]):
@@ -150,14 +156,25 @@ class PagerDutyConnector(BaseConnector):
                 resp_data = soup.text
             except Exception as e:
                 self.debug_print("Handled exception", e)
-                result.set_status(phantom.APP_ERROR, "Unable to parse response as a HTML status_code: {0}, data: {1}"
-                    .format(r.status_code, self._normalize_text(r.text)))
+                result.set_status(
+                    phantom.APP_ERROR,
+                    "Unable to parse response as a HTML status_code: {0}, data: {1}".format(r.status_code, self._normalize_text(r.text)),
+                )
         else:
             resp_data = r.text
 
         if not (200 <= r.status_code < 300):
-            return RetVal4(result.set_status(phantom.APP_ERROR, "Call returned error, status_code: {0}, data: {1}"
-                    .format(r.status_code, self._handle_py_ver_compat_for_input_str(self._normalize_text(resp_data)))), None, None, None)
+            return RetVal4(
+                result.set_status(
+                    phantom.APP_ERROR,
+                    "Call returned error, status_code: {0}, data: {1}".format(
+                        r.status_code, self._handle_py_ver_compat_for_input_str(self._normalize_text(resp_data))
+                    ),
+                ),
+                None,
+                None,
+                None,
+            )
 
         return RetVal4(phantom.APP_SUCCESS, status_code, resp_type, resp_data)
 
@@ -193,14 +210,14 @@ class PagerDutyConnector(BaseConnector):
 
     def _test_connectivity(self, param):
 
-        self.save_progress('Querying a single incident, to verify API key')
+        self.save_progress("Querying a single incident, to verify API key")
         action_result = self.add_action_result(ActionResult(dict(param)))
 
-        params = { "limit": 1 }
-        ret_val, resp_data = self._make_rest_call('/incidents', action_result, params)
+        params = {"limit": 1}
+        ret_val, resp_data = self._make_rest_call("/incidents", action_result, params)
 
         if phantom.is_fail(ret_val):
-            self.append_to_message('Test connectivity failed')
+            self.append_to_message("Test connectivity failed")
             return self.get_status()
 
         return self.set_status_save_progress(phantom.APP_SUCCESS, "Test connectivity passed")
@@ -208,11 +225,11 @@ class PagerDutyConnector(BaseConnector):
     def _paginator(self, endpoint, action_result):
 
         dic_map = {
-            self.ACTION_ID_LIST_USERS: 'users',
-            self.ACTION_ID_LIST_TEAMS: 'teams',
-            self.ACTION_ID_LIST_ONCALLS: 'oncalls',
-            self.ACTION_ID_LIST_SERVICES: 'services',
-            self.ACTION_ID_LIST_ESCALATIONS: 'escalation_policies'
+            self.ACTION_ID_LIST_USERS: "users",
+            self.ACTION_ID_LIST_TEAMS: "teams",
+            self.ACTION_ID_LIST_ONCALLS: "oncalls",
+            self.ACTION_ID_LIST_SERVICES: "services",
+            self.ACTION_ID_LIST_ESCALATIONS: "escalation_policies",
         }
         result_list = list()
         offset = 0
@@ -220,7 +237,7 @@ class PagerDutyConnector(BaseConnector):
         set_name = dic_map.get(self.get_action_identifier())
 
         while True:
-            endpoint = '{}{}{}'.format(endpoint, '&offset=', offset)
+            endpoint = "{}{}{}".format(endpoint, "&offset=", offset)
             ret_val, resp_json = self._make_rest_call(endpoint, action_result)
 
             if phantom.is_fail(ret_val):
@@ -229,9 +246,9 @@ class PagerDutyConnector(BaseConnector):
             if resp_json.get(set_name):
                 result_list.extend(resp_json[set_name])
             elif len(result_list) == 0:
-                return action_result.set_status(phantom.APP_ERROR, 'No data found')
+                return action_result.set_status(phantom.APP_ERROR, "No data found")
 
-            if not resp_json.get('more'):
+            if not resp_json.get("more"):
                 break
             else:
                 offset = offset + PAGERDUTY_DEFAULT_LIMIT
@@ -243,7 +260,7 @@ class PagerDutyConnector(BaseConnector):
         # Add an action result to the App Run
         action_result = self.add_action_result(ActionResult(dict(param)))
 
-        result_list = self._paginator('/oncalls?', action_result)
+        result_list = self._paginator("/oncalls?", action_result)
 
         if phantom.is_fail(result_list):
             return action_result.get_status()
@@ -251,7 +268,7 @@ class PagerDutyConnector(BaseConnector):
         for oncall in result_list:
             action_result.add_data(oncall)
 
-        action_result.update_summary({'num_oncalls': len(result_list)})
+        action_result.update_summary({"num_oncalls": len(result_list)})
 
         return action_result.set_status(phantom.APP_SUCCESS)
 
@@ -260,7 +277,7 @@ class PagerDutyConnector(BaseConnector):
         # Add an action result to the App Run
         action_result = self.add_action_result(ActionResult(dict(param)))
 
-        result_list = self._paginator('/teams?', action_result)
+        result_list = self._paginator("/teams?", action_result)
 
         if phantom.is_fail(result_list):
             return action_result.get_status()
@@ -268,7 +285,7 @@ class PagerDutyConnector(BaseConnector):
         for team in result_list:
             action_result.add_data(team)
 
-        action_result.update_summary({'total_teams': len(result_list)})
+        action_result.update_summary({"total_teams": len(result_list)})
 
         return action_result.set_status(phantom.APP_SUCCESS)
 
@@ -277,18 +294,18 @@ class PagerDutyConnector(BaseConnector):
         # Add an action result to the App Run
         action_result = self.add_action_result(ActionResult(dict(param)))
 
-        str_endpoint = ''
-        if param.get('team_ids'):
-            list_teams_id = [x.strip() for x in param.get('team_ids').split(',')]
-            list_teams_id = ' '.join(list_teams_id).split()
+        str_endpoint = ""
+        if param.get("team_ids"):
+            list_teams_id = [x.strip() for x in param.get("team_ids").split(",")]
+            list_teams_id = " ".join(list_teams_id).split()
             if list_teams_id:
                 for team_id in list_teams_id:
-                    str_endpoint = '{}{}{}{}'.format(str_endpoint, 'team_ids[]=', team_id, '&')
+                    str_endpoint = "{}{}{}{}".format(str_endpoint, "team_ids[]=", team_id, "&")
                 str_endpoint = str_endpoint[:-1]
             else:
-                return action_result.set_status(phantom.APP_ERROR, 'Please provide valid team_ids')
+                return action_result.set_status(phantom.APP_ERROR, "Please provide valid team_ids")
 
-        endpoint = '/services?{}'.format(str_endpoint)
+        endpoint = "/services?{}".format(str_endpoint)
 
         result_list = self._paginator(endpoint, action_result)
 
@@ -298,7 +315,7 @@ class PagerDutyConnector(BaseConnector):
         for service in result_list:
             action_result.add_data(service)
 
-        action_result.update_summary({'num_services': len(result_list)})
+        action_result.update_summary({"num_services": len(result_list)})
 
         return action_result.set_status(phantom.APP_SUCCESS)
 
@@ -307,18 +324,18 @@ class PagerDutyConnector(BaseConnector):
         # Add an action result to the App Run
         action_result = self.add_action_result(ActionResult(dict(param)))
 
-        str_endpoint = ''
-        if 'team_ids' in param:
-            list_teams_id = [x.strip() for x in param.get('team_ids').split(',')]
-            list_teams_id = ' '.join(list_teams_id).split()
+        str_endpoint = ""
+        if "team_ids" in param:
+            list_teams_id = [x.strip() for x in param.get("team_ids").split(",")]
+            list_teams_id = " ".join(list_teams_id).split()
             if list_teams_id:
                 for team_id in list_teams_id:
-                    str_endpoint = '{}{}{}{}'.format(str_endpoint, 'team_ids[]=', team_id, '&')
+                    str_endpoint = "{}{}{}{}".format(str_endpoint, "team_ids[]=", team_id, "&")
                 str_endpoint = str_endpoint[:-1]
             else:
-                return action_result.set_status(phantom.APP_ERROR, 'Please provide valid team_ids')
+                return action_result.set_status(phantom.APP_ERROR, "Please provide valid team_ids")
 
-        endpoint = '/users?{}'.format(str_endpoint)
+        endpoint = "/users?{}".format(str_endpoint)
 
         result_list = self._paginator(endpoint, action_result)
 
@@ -328,7 +345,7 @@ class PagerDutyConnector(BaseConnector):
         for user in result_list:
             action_result.add_data(user)
 
-        action_result.update_summary({'num_users': len(result_list)})
+        action_result.update_summary({"num_users": len(result_list)})
 
         return action_result.set_status(phantom.APP_SUCCESS)
 
@@ -337,29 +354,29 @@ class PagerDutyConnector(BaseConnector):
         # Add an action result to the App Run
         action_result = self.add_action_result(ActionResult(dict(param)))
 
-        str_endpoint = ''
-        if param.get('team_ids'):
-            list_teams_id = [x.strip() for x in param.get('team_ids').split(',')]
-            list_teams_id = ' '.join(list_teams_id).split()
+        str_endpoint = ""
+        if param.get("team_ids"):
+            list_teams_id = [x.strip() for x in param.get("team_ids").split(",")]
+            list_teams_id = " ".join(list_teams_id).split()
             if list_teams_id:
                 for team_id in list_teams_id:
-                    str_endpoint = '{}{}{}{}'.format(str_endpoint, 'team_ids[]=', team_id, '&')
-                if param.get('user_ids') is None:
+                    str_endpoint = "{}{}{}{}".format(str_endpoint, "team_ids[]=", team_id, "&")
+                if param.get("user_ids") is None:
                     str_endpoint = str_endpoint[:-1]
             else:
-                return action_result.set_status(phantom.APP_ERROR, 'Please provide valid team_ids')
+                return action_result.set_status(phantom.APP_ERROR, "Please provide valid team_ids")
 
-        if param.get('user_ids'):
-            list_users_id = [x.strip() for x in param.get('user_ids').split(',')]
-            list_users_id = ' '.join(list_users_id).split()
+        if param.get("user_ids"):
+            list_users_id = [x.strip() for x in param.get("user_ids").split(",")]
+            list_users_id = " ".join(list_users_id).split()
             if list_users_id:
                 for user_id in list_users_id:
-                    str_endpoint = '{}{}{}{}'.format(str_endpoint, 'user_ids[]=', user_id, '&')
+                    str_endpoint = "{}{}{}{}".format(str_endpoint, "user_ids[]=", user_id, "&")
                 str_endpoint = str_endpoint[:-1]
             else:
-                return action_result.set_status(phantom.APP_ERROR, 'Please provide valid user_ids')
+                return action_result.set_status(phantom.APP_ERROR, "Please provide valid user_ids")
 
-        endpoint = '/escalation_policies?{}'.format(str_endpoint)
+        endpoint = "/escalation_policies?{}".format(str_endpoint)
 
         result_list = self._paginator(endpoint, action_result)
 
@@ -372,7 +389,7 @@ class PagerDutyConnector(BaseConnector):
         for esc_pol in result_list:
             action_result.add_data(esc_pol)
 
-        action_result.update_summary({'num_policies': len(result_list)})
+        action_result.update_summary({"num_policies": len(result_list)})
 
         return action_result.set_status(phantom.APP_SUCCESS)
 
@@ -382,37 +399,31 @@ class PagerDutyConnector(BaseConnector):
         action_result = self.add_action_result(ActionResult(dict(param)))
 
         body = {
-                    "incident": {
-                        "type": "incident",
-                        "title": param["title"],
-                        "service": {
-                            "id": param["service_id"],
-                            "type": "service"
-                        },
-                        "body": {
-                            "type": "incident_body",
-                            "details": param["description"]
-                        }
-                    }
-               }
+            "incident": {
+                "type": "incident",
+                "title": param["title"],
+                "service": {"id": param["service_id"], "type": "service"},
+                "body": {"type": "incident_body", "details": param["description"]},
+            }
+        }
 
-        if 'escalation_id' in param:
+        if "escalation_id" in param:
             body["incident"]["escalation_policy"] = {"id": param["escalation_id"], "type": "escalation_policy"}
-        if 'assignee_id' in param:
+        if "assignee_id" in param:
             body["incident"]["assignments"] = [{"assignee": {"id": param["assignee_id"], "type": "user"}}]
 
         headers = {}
-        if 'email' in param:
-            headers['From'] = param['email']
+        if "email" in param:
+            headers["From"] = param["email"]
 
-        ret_val, resp_data = self._make_rest_call('/incidents', action_result, data=body, headers=headers, method='post')
+        ret_val, resp_data = self._make_rest_call("/incidents", action_result, data=body, headers=headers, method="post")
 
         if phantom.is_fail(ret_val):
             return action_result.get_status()
 
         action_result.add_data(resp_data)
 
-        action_result.update_summary({'incident_key': resp_data.get('incident', {}).get('incident_key', "Unknown")})
+        action_result.update_summary({"incident_key": resp_data.get("incident", {}).get("incident_key", "Unknown")})
 
         return action_result.set_status(phantom.APP_SUCCESS)
 
@@ -422,30 +433,30 @@ class PagerDutyConnector(BaseConnector):
         action_result = self.add_action_result(ActionResult(dict(param)))
 
         # Setup params
-        params = {'escalation_policy_ids[]': param['escalation_id']}
+        params = {"escalation_policy_ids[]": param["escalation_id"]}
 
         # Find user IDs associated with escalation ID
-        ret_val, resp_data_oncalls = self._make_rest_call('/oncalls', action_result, params=params)
+        ret_val, resp_data_oncalls = self._make_rest_call("/oncalls", action_result, params=params)
 
         if phantom.is_fail(ret_val):
             return action_result.get_status()
 
-        oncalls = resp_data_oncalls.get('oncalls')
-        action_result.update_summary({'num_users': len(oncalls)})
+        oncalls = resp_data_oncalls.get("oncalls")
+        action_result.update_summary({"num_users": len(oncalls)})
 
         # Find additional info about each user
         for user in oncalls:
             try:
-                user_id = user['user']['id']
+                user_id = user["user"]["id"]
             except KeyError as e:
-                return action_result.set_status(phantom.APP_ERROR, 'No user id in response', e)
+                return action_result.set_status(phantom.APP_ERROR, "No user id in response", e)
 
-            ret_val, resp_data_user = self._make_rest_call('/users/{0}'.format(user_id), action_result, params={})
+            ret_val, resp_data_user = self._make_rest_call("/users/{0}".format(user_id), action_result, params={})
 
             if phantom.is_fail(ret_val):
                 return action_result.get_status()
 
-            user['user'] = resp_data_user.get('user')
+            user["user"] = resp_data_user.get("user")
             action_result.add_data(user)
 
         return action_result.set_status(phantom.APP_SUCCESS)
@@ -455,18 +466,18 @@ class PagerDutyConnector(BaseConnector):
         # Add an action result to the App Run
         action_result = self.add_action_result(ActionResult(dict(param)))
 
-        user_id = param.get('user_id')
+        user_id = param.get("user_id")
 
-        ret_val, resp_data = self._make_rest_call('/users/{0}'.format(user_id), action_result, params={})
+        ret_val, resp_data = self._make_rest_call("/users/{0}".format(user_id), action_result, params={})
 
         if phantom.is_fail(ret_val):
             return action_result.get_status()
 
         try:
-            action_result.add_data(resp_data['user'])
-            action_result.update_summary({'name': resp_data['user']['name']})
+            action_result.add_data(resp_data["user"])
+            action_result.update_summary({"name": resp_data["user"]["name"]})
         except KeyError as e:
-            return action_result.set_status(phantom.APP_ERROR, 'No user in response', e)
+            return action_result.set_status(phantom.APP_ERROR, "No user in response", e)
 
         return action_result.set_status(phantom.APP_SUCCESS)
 
@@ -501,12 +512,13 @@ class PagerDutyConnector(BaseConnector):
         return ret_val
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
 
     import pudb
+
     pudb.set_trace()
 
-    if (len(sys.argv) < 2):
+    if len(sys.argv) < 2:
         print("No test json specified as input")
         sys.exit(0)
 
