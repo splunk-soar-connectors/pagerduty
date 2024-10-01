@@ -2,7 +2,7 @@
 # PagerDuty
 
 Publisher: Splunk  
-Connector Version: 2.0.6  
+Connector Version: 2.0.7  
 Product Vendor: PagerDuty  
 Product Name: PagerDuty  
 Product Version Supported (regex): ".\*"  
