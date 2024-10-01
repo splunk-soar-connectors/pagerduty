@@ -10,7 +10,7 @@
 {% block widget_content %} <!-- Main Start Block -->
 
 <!-- File: display_users.html
-  Copyright (c) 2016-2020 Splunk Inc.
+  Copyright (c) 2016-2024 Splunk Inc.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -29,47 +29,47 @@ and limitations under the License.
     .pagerduty a:hover {
         text-decoration:underline;
     }
- 
+
     .pagerduty .wf-h4-style {
         font-size : 20px;
     }
- 
+
     .pagerduty .wf-table-vertical {
         width: initial;
         font-size: 12px;
     }
- 
+
     .pagerduty .wf-table-vertical td{
         padding: 5px;
         border: 1px solid !important;
     }
- 
+
     .pagerduty .wf-table-vertical tr td:first-child {
         font-weight: bold;
     }
- 
+
     .pagerduty .dataTable th.widget-th {
         border-top: 1px solid !important;
         border-bottom: 1px solid !important;
     }
- 
+
     .pagerduty .dataTable td {
         vertical-align: top;
     }
- 
+
     .pagerduty .dataTable td.widget-td a{
         font-size: 12px;
     }
- 
+
     .pagerduty .dataTable {
         font-size: 12px;
     }
- 
+
     .pagerduty .dataTable .glyphicon.glyphicon-dot:before {
         content: "\25cf"; font-size: 10px;
     }
- 
- 
+
+
  </style>
 
 
@@ -106,7 +106,7 @@ and limitations under the License.
         {% else %}
         <td>None</td>
         {% endif %}
-        {% if policy.teams %}      
+        {% if policy.teams %}
         <td class="widget-td">
             {% for team in policy.teams %}
             <span class="glyphicon glyphicon-dot"></span>&nbsp;
@@ -147,8 +147,8 @@ and limitations under the License.
             }
           });
           $('.dataTable').DataTable();
-        
+
 </script>
-        
-        
+
+
 {% endblock %} <!-- Main Start Block -->
