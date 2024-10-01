@@ -13,7 +13,7 @@
 # either express or implied. See the License for the specific language governing permissions
 # and limitations under the License.
 PAGERDUTY_JSON_BASEURL = "base_url"
-PAGERDUTY_API_KEY = "api_token"
+PAGERDUTY_API_KEY = "api_token"  # pragma: allowlist secret
 
 # Deprecated as of v2
 # PAGERDUTY_API_URI = "/api/v1"
