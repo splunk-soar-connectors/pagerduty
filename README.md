@@ -1,8 +1,8 @@
 [comment]: # "Auto-generated SOAR connector documentation"
 # PagerDuty
 
-Publisher: Splunk  
-Connector Version: 2.0.7  
+Publisher: Splunk Community  
+Connector Version: 3.0.0  
 Product Vendor: PagerDuty  
 Product Name: PagerDuty  
 Product Version Supported (regex): ".\*"  
