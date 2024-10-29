@@ -6,7 +6,7 @@ Connector Version: 3.0.0
 Product Vendor: PagerDuty  
 Product Name: PagerDuty  
 Product Version Supported (regex): ".\*"  
-Minimum Product Version: 6.2.1  
+Minimum Product Version: 6.2.2  
 
 This app integrates with PagerDuty to implement investigative and ticketing actions
 
