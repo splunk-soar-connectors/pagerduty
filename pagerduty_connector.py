@@ -259,11 +259,13 @@ class PagerDutyConnector(BaseConnector):
     def _handle_list_oncalls(self, param):
 
         # Add an action result to the App Run
+        self.debug_print("Running action - list oncalls")
         action_result = self.add_action_result(ActionResult(dict(param)))
 
         result_list = self._paginator("/oncalls?", action_result)
 
         if phantom.is_fail(result_list):
+            self.debug_print("Action 'list oncalls' failed")
             return action_result.get_status()
 
         for oncall in result_list:
@@ -276,11 +278,13 @@ class PagerDutyConnector(BaseConnector):
     def _handle_list_teams(self, param):
 
         # Add an action result to the App Run
+        self.debug_print("Running action - list teams")
         action_result = self.add_action_result(ActionResult(dict(param)))
 
         result_list = self._paginator("/teams?", action_result)
 
         if phantom.is_fail(result_list):
+            self.debug_print("Action 'list teams' failed")
             return action_result.get_status()
 
         for team in result_list:
@@ -293,6 +297,7 @@ class PagerDutyConnector(BaseConnector):
     def _handle_list_services(self, param):
 
         # Add an action result to the App Run
+        self.debug_print("Running action - list services")
         action_result = self.add_action_result(ActionResult(dict(param)))
 
         str_endpoint = ""
@@ -311,6 +316,7 @@ class PagerDutyConnector(BaseConnector):
         result_list = self._paginator(endpoint, action_result)
 
         if phantom.is_fail(result_list):
+            self.debug_print("Action 'list services' failed")
             return action_result.get_status()
 
         for service in result_list:
@@ -323,6 +329,7 @@ class PagerDutyConnector(BaseConnector):
     def _handle_list_users(self, param):
 
         # Add an action result to the App Run
+        self.debug_print("Running action - list users")
         action_result = self.add_action_result(ActionResult(dict(param)))
 
         str_endpoint = ""
@@ -341,6 +348,7 @@ class PagerDutyConnector(BaseConnector):
         result_list = self._paginator(endpoint, action_result)
 
         if phantom.is_fail(result_list):
+            self.debug_print("Action 'list users' failed")
             return action_result.get_status()
 
         for user in result_list:
@@ -354,6 +362,7 @@ class PagerDutyConnector(BaseConnector):
 
         # Add an action result to the App Run
         action_result = self.add_action_result(ActionResult(dict(param)))
+        self.debug_print("Running action - list escalations")
 
         str_endpoint = ""
         if param.get("team_ids"):
@@ -382,6 +391,7 @@ class PagerDutyConnector(BaseConnector):
         result_list = self._paginator(endpoint, action_result)
 
         if phantom.is_fail(result_list):
+            self.debug_print("Action 'list escalations' failed")
             return action_result.get_status()
 
         if result_list is None:
@@ -397,6 +407,7 @@ class PagerDutyConnector(BaseConnector):
     def _handle_create_incident(self, param):
 
         # Add an action result to the App Run
+        self.debug_print("Running action - create incident")
         action_result = self.add_action_result(ActionResult(dict(param)))
 
         body = {
@@ -420,6 +431,7 @@ class PagerDutyConnector(BaseConnector):
         ret_val, resp_data = self._make_rest_call("/incidents", action_result, data=body, headers=headers, method="post")
 
         if phantom.is_fail(ret_val):
+            self.debug_print("Action 'create incident' failed")
             return action_result.get_status()
 
         action_result.add_data(resp_data)
@@ -432,6 +444,7 @@ class PagerDutyConnector(BaseConnector):
 
         # Add an action result to the App Run
         action_result = self.add_action_result(ActionResult(dict(param)))
+        self.debug_print("Running action - get oncall user")
 
         # Setup params
         params = {"escalation_policy_ids[]": param["escalation_id"]}
@@ -455,6 +468,7 @@ class PagerDutyConnector(BaseConnector):
             ret_val, resp_data_user = self._make_rest_call("/users/{0}".format(user_id), action_result, params={})
 
             if phantom.is_fail(ret_val):
+                self.debug_print("Action 'get oncall users' failed")
                 return action_result.get_status()
 
             user["user"] = resp_data_user.get("user")
@@ -464,6 +478,7 @@ class PagerDutyConnector(BaseConnector):
 
     def _handle_get_user_info(self, param):
 
+        self.debug_print("Running action - get user info")
         # Add an action result to the App Run
         action_result = self.add_action_result(ActionResult(dict(param)))
 
@@ -472,6 +487,7 @@ class PagerDutyConnector(BaseConnector):
         ret_val, resp_data = self._make_rest_call("/users/{0}".format(user_id), action_result, params={})
 
         if phantom.is_fail(ret_val):
+            self.debug_print("Action 'get user info' failed")
             return action_result.get_status()
 
         try:
