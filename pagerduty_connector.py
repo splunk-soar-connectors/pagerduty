@@ -487,7 +487,7 @@ class PagerDutyConnector(BaseConnector):
         ret_val, resp_data = self._make_rest_call("/users/{0}".format(user_id), action_result, params={})
 
         if phantom.is_fail(ret_val):
-            self.debug_print("Action 'get user info' failed")    
+            self.debug_print("Action 'get user info' failed")
             return action_result.get_status()
 
         try:
